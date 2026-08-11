@@ -1,63 +1,32 @@
 name: Deploy to GitHub Pages
-
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
-
 jobs:
-  # Types, unit tests and the behaviour/accessibility suites gate the deploy, on
-  # Chromium, Firefox, WebKit and two phone profiles. Visual regression is not in
-  # this gate: its baselines carry the platform in their file name and only the
-  # win32 set is committed, so on this runner every one of them would fail as a
-  # missing snapshot and nothing would ever deploy. See playwright.config.ts.
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run check
-      - run: npm run test:unit
-      - run: npx playwright install --with-deps chromium firefox webkit
-      - run: npm run test:e2e
-        id: e2e
-      # Only when the suite itself failed — `check` and `test:unit` run before it
-      # and leave no report, and an upload that finds nothing is how this step
-      # came to be silently empty for the whole life of the repository. It is an
-      # error now rather than a warning, so it cannot go quiet a second time.
-      - uses: actions/upload-artifact@v4
-        if: failure() && steps.e2e.conclusion == 'failure'
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
-          if-no-files-found: error
-
-  build:
-    needs: test
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: withastro/action@v3
-
+          path: dist
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

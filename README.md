@@ -4,7 +4,7 @@ Presentation site for **Echelon Desktop**, a personal assistant for the owner of
 a business: it lives on their computer, remembers their people and agreements,
 runs the routine and finishes it, and leaves the decisions to them.
 
-**Live:** https://samandarmansurkhodjaev2713.github.io/echelon-site-main/ · RU · EN · UZ
+**Live:** https://komrxn.github.io/echelon-site-main/ · RU · EN · UZ
 
 ---
 
