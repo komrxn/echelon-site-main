@@ -7,19 +7,29 @@ interface Props {
 
 const { dict } = Astro.props;
 const s = dict.soon;
+
+/* The camera's cast. Local skeleton coordinates put the hip at (0,0) and the
+   feet at y=66; the outer group places the hip in the scene, `scale` sets the
+   apparent depth. ID chips are deliberately locale-free — a tracker's label is
+   the same in any language. */
+const WALKERS = [
+  { cls: 'c-walkA', tag: 'ID 04 · 98%', scale: 1.25, y: 430, x: 640, flesh: 0.16 },
+  { cls: 'c-walkB', tag: 'ID 07 · 96%', scale: 0.8, y: 368, x: 250, flesh: 0.11 },
+];
+const QUEUE_X = [320, 375, 430, 485, 540, 595];
 ---
 
 <!--
   WHAT'S NEXT — the only section on the page about the future, and it says so.
-  Deep in the night world (03:00), between the ledger and the dawn seam: the
-  machine building the next shift while the current one runs.
+  Deep in the night world (03:00), between the ledger and the dawn seam.
 
-  Motion here is anime.js, not the page's reveal patterns — these two scenes are
-  small mechanisms, not paragraphs arriving. The section stays honest about it
-  the same way the rest of the page does: everything ships in its FINAL state,
-  and the script hides-then-plays only after it has actually loaded (the
-  [data-anim] attribute is set by the script itself). No JS, a failed import, or
-  prefers-reduced-motion all land on the same fully-legible static frame.
+  Two drawn instruments, not screenshots: a floor plan of the virtual office
+  (rooms, mini employees, speech bubbles, reports travelling to the head
+  office), and a camera frame where the system builds a skeleton over every
+  person it tracks. Everything ships in its FINAL state; the [data-anim]
+  attribute — set only by this section's own script when motion is allowed —
+  is what arms the hidden initial states. No JS, a failed import and
+  prefers-reduced-motion all land on the same fully legible static frame.
 -->
 <section class="soon band on-ink" id="soon" data-shift="03:00" data-field-surface="0.45">
   <div class="page">
@@ -29,7 +39,7 @@ const s = dict.soon;
       <p class="lead soon__lead">{s.lead}</p>
     </div>
 
-    <!-- a) The virtual office: agents working, every one reporting to the hub. -->
+    <!-- a) The virtual office: a floor plan of the AI staff at work. -->
     <article class="soon__feature">
       <div class="soon__copy" data-reveal="expand">
         <p class="soon__kicker sys">
@@ -41,27 +51,100 @@ const s = dict.soon;
         <p class="note soon__fnote">{s.office.note}</p>
       </div>
 
-      <div class="soon__visual soon__office" data-office>
-        <svg class="soon__wires" data-wires aria-hidden="true"></svg>
-        <div class="soon__agents">
-          {
-            s.office.agents.map((a) => (
-              <div class="soon__agent" data-agent data-tone={a.tone}>
-                <span class="soon__dot" data-dot aria-hidden="true" />
-                <span class="soon__agent-name">{a.name}</span>
-                <span class="soon__agent-state sys">{a.state}</span>
-                <span class="soon__agent-task sys">{a.task}</span>
-              </div>
-            ))
-          }
+      <div class="soon__office" data-office>
+        <div class="soon__plan">
+          <div class="soon__plansvg">
+            <svg viewBox="0 0 1000 540" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <!-- walls, drawn like a technical print -->
+            <path class="o-wall" d="M12 12 H988 V528 H12 Z"></path>
+            <path class="o-wall" d="M340 12 V78 M340 118 V250 M340 290 V422 M340 462 V528"></path>
+            <path class="o-wall" d="M12 184 H340 M12 356 H340"></path>
+            <path class="o-wall" d="M660 12 V150 M660 190 V420 M660 460 V528"></path>
+            <path class="o-wall" d="M660 350 H988"></path>
+
+            <!-- the vacancy: the constructor's empty plot -->
+            <path class="o-dash" d="M684 374 H964 V504 H684 Z"></path>
+            <path class="o-plus" d="M824 406 V434 M810 420 H838"></path>
+
+            <!-- report routes: every room reports into the head office -->
+            <path class="o-ppath" d="M345 98 C450 98 500 110 530 140 C555 163 590 170 655 170"></path>
+            <path class="o-ppath" d="M345 270 C450 270 490 240 520 205 C545 180 590 170 655 170"></path>
+            <path class="o-ppath" d="M345 442 C460 442 490 380 515 300 C535 235 585 172 655 170"></path>
+            <circle class="o-pulse" r="3.2"></circle>
+            <circle class="o-pulse" r="3.2"></circle>
+            <circle class="o-pulse" r="3.2"></circle>
+
+            <!-- desks -->
+            {
+              [98, 270, 442].map((cy) => (
+                <g class="o-furn">
+                  <rect class="o-desk" x="80" y={cy - 46} width="150" height="34" />
+                  <line class="o-screen" x1="140" y1={cy - 40} x2="170" y2={cy - 40} />
+                </g>
+              ))
+            }
+            <g class="o-furn">
+              <rect class="o-desk" x="730" y="120" width="200" height="40"></rect>
+              <line class="o-screen" x1="810" y1="128" x2="850" y2="128"></line>
+            </g>
+
+            <!-- the staff -->
+            {
+              [98, 270, 442].map((cy) => (
+                <g class="o-fig" data-pop>
+                  <circle class="o-head" cx="155" cy={cy - 4} r="8" />
+                  <rect class="o-body" x="144" y={cy + 6} width="22" height="30" rx="10" />
+                </g>
+              ))
+            }
+            <g class="o-fig o-fig--hub" data-pop>
+              <circle class="o-head" cx="830" cy="180" r="9"></circle>
+              <rect class="o-body" x="817" y="191" width="26" height="34" rx="12"></rect>
+              <circle class="o-hubdot" cx="842" cy="170" r="3.5"></circle>
+            </g>
+            </svg>
+
+            <!-- room labels ride the plan in every mode -->
+            <div class="soon__labels" aria-hidden="true">
+              <span class="o-lab" style="left:2.8%;top:3.8%">{s.office.rooms.recruiter}</span>
+              <span class="o-lab" style="left:2.8%;top:35.6%">{s.office.rooms.content}</span>
+              <span class="o-lab" style="left:2.8%;top:67.4%">{s.office.rooms.researcher}</span>
+              <span class="o-lab o-lab--hub" style="left:67.4%;top:3.8%">
+                {s.office.rooms.hub}
+                <em>{s.office.hubRole}</em>
+              </span>
+              <span class="o-lab o-lab--vac" style="left:68.4%;top:84%;width:27.6%">{s.office.rooms.vacancy}</span>
+            </div>
+          </div>
+
+          <!-- speech bubbles: who is doing what, right now -->
+          <div class="soon__bubbles">
+            <div class="o-bub" style="left:20%;top:2.5%">
+              <b>{s.office.rooms.recruiter}</b>
+              <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="o-text">{s.office.bubbles.recruiter}</span>
+            </div>
+            <div class="o-bub" style="left:20%;top:35%">
+              <b>{s.office.rooms.content}</b>
+              <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="o-text">{s.office.bubbles.content}</span>
+            </div>
+            <div class="o-bub" style="left:20%;top:67%">
+              <b>{s.office.rooms.researcher}</b>
+              <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="o-text">{s.office.bubbles.researcher}</span>
+            </div>
+            <div class="o-bub o-bub--hub" style="left:69%;top:44%">
+              <b>{s.office.rooms.hub}</b>
+              <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="o-text">{s.office.bubbles.hub}</span>
+            </div>
+          </div>
         </div>
-        <div class="soon__hub" data-hub>
-          <p class="soon__hub-name">
-            {s.office.hubName}
-            <span class="soon__hub-role sys">{s.office.hubRole}</span>
-          </p>
+
+        <div class="soon__reports">
           <p class="label soon__reports-label">{s.office.reportsLabel}</p>
-          <ol class="soon__reports">
+          <ol class="soon__reports-list">
             {
               s.office.reports.map((r) => (
                 <li class="soon__report" data-report>
@@ -75,8 +158,8 @@ const s = dict.soon;
       </div>
     </article>
 
-    <!-- b) AI video monitoring: the camera notices, the owner gets one message. -->
-    <article class="soon__feature soon__feature--flip">
+    <!-- b) AI video monitoring: skeletons built and tracked over people. -->
+    <article class="soon__feature">
       <div class="soon__copy" data-reveal="expand">
         <p class="soon__kicker sys">
           <span class="soon__badge">{s.badge}</span>
@@ -87,7 +170,7 @@ const s = dict.soon;
         <p class="note soon__fnote">{s.cctv.note}</p>
       </div>
 
-      <div class="soon__visual soon__camwrap" data-cam>
+      <div class="soon__camwrap" data-cam>
         <div class="soon__cam">
           <div class="soon__cam-top sys">
             <span class="soon__rec" data-rec aria-hidden="true"></span>
@@ -95,23 +178,171 @@ const s = dict.soon;
             <span class="soon__cam-name">{s.cctv.camName}</span>
             <span class="soon__cam-time">{s.cctv.camTime}</span>
           </div>
-          <div class="soon__scene">
-            <span class="soon__scanline" data-scanline aria-hidden="true"></span>
-            <span class="soon__desk" aria-hidden="true"></span>
-            <span class="soon__clerk" aria-hidden="true"></span>
-            <div class="soon__queue" aria-hidden="true">
-              {Array.from({ length: 6 }).map(() => <span class="soon__person" data-person />)}
-            </div>
-            <div class="soon__detect" data-detect>
-              <span class="soon__detect-chip sys" data-chip>
-                {s.cctv.queueLabel} · <span data-count>6</span>
-              </span>
-              <svg class="soon__detect-frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <path data-detect-path d="M 2 2 H 98 V 98 H 2 Z" vector-effect="non-scaling-stroke"></path>
-              </svg>
-            </div>
-          </div>
+          <span class="soon__scanline" data-scanline aria-hidden="true"></span>
+
+          <svg class="soon__scene" viewBox="0 0 1000 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <!-- room geometry hint -->
+            <line class="c-horizon" x1="0" y1="430" x2="1000" y2="430"></line>
+
+            <!-- background walker, already tracked -->
+            {
+              WALKERS.slice(1).map((w) => (
+                <g class={`c-walk ${w.cls}`} transform={`translate(0 ${w.y})`} style={`--flesh:${w.flesh}`}>
+                  <g class="c-walk-x">
+                    <g transform={`scale(${w.scale})`}>
+                      <g class="c-bob">
+                        <g class="c-arm c-arm-r" data-pivot>
+                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
+                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
+                          <circle class="c-joint" cx="0" cy="-18" r="3" />
+                          <g class="c-fore" data-pivot>
+                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
+                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
+                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-leg c-leg-r" data-pivot>
+                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
+                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
+                          <circle class="c-joint" cx="0" cy="34" r="3" />
+                          <g class="c-shin" data-pivot>
+                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
+                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
+                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-torso">
+                          <line class="c-flesh c-flesh--torso" x1="0" y1="0" x2="0" y2="-52" />
+                          <line class="c-bone" x1="0" y1="0" x2="0" y2="-52" />
+                          <circle class="c-joint" cx="0" cy="0" r="3.4" />
+                          <circle class="c-joint" cx="0" cy="-46" r="3.4" />
+                        </g>
+                        <circle class="c-flesh-head" cx="0" cy="-66" r="11"></circle>
+                        <line class="c-bone" x1="0" y1="-52" x2="0" y2="-60"></line>
+                        <circle class="c-joint" cx="0" cy="-63" r="3"></circle>
+                        <g class="c-leg c-leg-l" data-pivot>
+                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
+                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
+                          <circle class="c-joint" cx="0" cy="34" r="3" />
+                          <g class="c-shin" data-pivot>
+                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
+                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
+                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-arm c-arm-l" data-pivot>
+                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
+                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
+                          <circle class="c-joint" cx="0" cy="-18" r="3" />
+                          <g class="c-fore" data-pivot>
+                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
+                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
+                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-tag">
+                          <path class="c-box" d="M -40 -92 H 40 V 78 H -40 Z" />
+                          <text class="c-id" x="-40" y="-100">{w.tag}</text>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              ))
+            }
+
+            <!-- the till and the queue -->
+            <g class="c-furn">
+              <rect class="c-desk" x="40" y="400" width="200" height="48"></rect>
+              <line class="c-screen" x1="120" y1="410" x2="160" y2="410"></line>
+            </g>
+            <g class="c-fig">
+              <circle class="c-sil-head" cx="140" cy="366" r="9"></circle>
+              <rect class="c-sil-body" x="127" y="377" width="26" height="42" rx="12"></rect>
+            </g>
+            {
+              QUEUE_X.map((x) => (
+                <g class="c-fig c-fig--q" data-pop>
+                  <circle class="c-sil-head" cx={x} cy="386" r="9" />
+                  <rect class="c-sil-body" x={x - 13} y="398" width="26" height="52" rx="13" />
+                </g>
+              ))
+            }
+            <path class="c-qbox" d="M300 366 H630 V472 H300 Z"></path>
+
+            <!-- foreground walker, tracked live -->
+            {
+              WALKERS.slice(0, 1).map((w) => (
+                <g class={`c-walk ${w.cls}`} transform={`translate(0 ${w.y})`} style={`--flesh:${w.flesh}`}>
+                  <g class="c-walk-x">
+                    <g transform={`scale(${w.scale})`}>
+                      <g class="c-bob">
+                        <g class="c-arm c-arm-r" data-pivot>
+                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
+                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
+                          <circle class="c-joint" cx="0" cy="-18" r="3" />
+                          <g class="c-fore" data-pivot>
+                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
+                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
+                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-leg c-leg-r" data-pivot>
+                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
+                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
+                          <circle class="c-joint" cx="0" cy="34" r="3" />
+                          <g class="c-shin" data-pivot>
+                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
+                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
+                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-torso">
+                          <line class="c-flesh c-flesh--torso" x1="0" y1="0" x2="0" y2="-52" />
+                          <line class="c-bone" x1="0" y1="0" x2="0" y2="-52" />
+                          <circle class="c-joint" cx="0" cy="0" r="3.4" />
+                          <circle class="c-joint" cx="0" cy="-46" r="3.4" />
+                        </g>
+                        <circle class="c-flesh-head" cx="0" cy="-66" r="11"></circle>
+                        <line class="c-bone" x1="0" y1="-52" x2="0" y2="-60"></line>
+                        <circle class="c-joint" cx="0" cy="-63" r="3"></circle>
+                        <g class="c-leg c-leg-l" data-pivot>
+                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
+                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
+                          <circle class="c-joint" cx="0" cy="34" r="3" />
+                          <g class="c-shin" data-pivot>
+                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
+                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
+                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-arm c-arm-l" data-pivot>
+                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
+                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
+                          <circle class="c-joint" cx="0" cy="-18" r="3" />
+                          <g class="c-fore" data-pivot>
+                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
+                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
+                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
+                          </g>
+                        </g>
+                        <g class="c-tag">
+                          <path class="c-box" d="M -40 -92 H 40 V 78 H -40 Z" />
+                          <text class="c-id" x="-40" y="-100">{w.tag}</text>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              ))
+            }
+          </svg>
+
+          <span class="soon__detect-chip sys" data-chip>
+            {s.cctv.queueLabel} · <span data-count>6</span>
+          </span>
         </div>
+
         <div class="soon__alert" data-alert>
           <p class="label soon__alert-title">{s.cctv.alertTitle}</p>
           <p class="soon__alert-text">{s.cctv.alert}</p>
@@ -136,21 +367,8 @@ const s = dict.soon;
   }
 
   .soon__feature {
-    margin-top: clamp(3rem, 8vh, 5.5rem);
-    display: grid;
-    gap: clamp(1.75rem, 4vh, 2.5rem);
-    align-items: center;
+    margin-top: clamp(3.5rem, 10vh, 6.5rem);
   }
-  @media (min-width: 62rem) {
-    .soon__feature {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-      gap: clamp(2.5rem, 5vw, 5rem);
-    }
-    .soon__feature--flip .soon__copy {
-      order: 2;
-    }
-  }
-
   .soon__kicker {
     display: flex;
     align-items: center;
@@ -173,111 +391,242 @@ const s = dict.soon;
     line-height: var(--leading-title);
     letter-spacing: var(--track-title);
     font-weight: 620;
-    max-width: 24ch;
+    max-width: 26ch;
   }
   .soon__ftext {
     margin-top: 0.9rem;
-    max-width: var(--measure-tight);
+    max-width: var(--measure);
     color: var(--ink-muted);
   }
   .soon__fnote {
     margin-top: 0.9rem;
+    max-width: var(--measure-tight);
   }
 
-  /* ---- a) the office ---- */
+  /* ============ a) the office plan ============ */
   .soon__office {
+    margin-top: clamp(1.75rem, 4vh, 2.75rem);
+    max-width: 68rem;
+  }
+  .soon__plan {
     position: relative;
-    display: grid;
-    gap: clamp(1.25rem, 3vh, 2rem);
   }
-  @media (min-width: 40rem) {
-    .soon__office {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-      gap: clamp(2.25rem, 6vw, 4.5rem);
-      align-items: center;
-    }
+  .soon__plansvg {
+    position: relative;
   }
-  .soon__wires {
+  .soon__plansvg > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .o-wall {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1.5;
+  }
+  .o-dash {
+    fill: none;
+    stroke: var(--machine);
+    stroke-width: 1.2;
+    stroke-dasharray: 6 7;
+  }
+  .o-plus {
+    fill: none;
+    stroke: var(--machine);
+    stroke-width: 1.6;
+  }
+  .o-ppath {
+    fill: none;
+    stroke: var(--signal-edge);
+    stroke-width: 1.4;
+  }
+  .o-pulse {
+    fill: var(--signal);
+    opacity: 0;
+  }
+  .o-desk {
+    fill: rgba(244, 241, 232, 0.05);
+    stroke: var(--rule-strong);
+    stroke-width: 1.2;
+  }
+  .o-screen {
+    stroke: var(--machine);
+    stroke-width: 2;
+  }
+  .o-head {
+    fill: var(--ink-muted);
+  }
+  .o-body {
+    fill: var(--ink-soft);
+  }
+  .o-fig--hub .o-head {
+    fill: var(--ink);
+  }
+  .o-fig--hub .o-body {
+    fill: var(--ink-muted);
+  }
+  .o-hubdot {
+    fill: var(--signal);
+  }
+  [data-pop] {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+
+  .soon__labels {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
     pointer-events: none;
   }
-  .soon__agents {
-    display: grid;
-    gap: clamp(0.8rem, 2vh, 1.1rem);
-    position: relative;
-  }
-  .soon__agent {
-    position: relative;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: baseline;
-    column-gap: 0.55rem;
-    padding: 0.75rem 0.9rem 0.8rem;
-    border: 1px solid var(--rule);
-    background: var(--paper-deep);
-  }
-  .soon__dot {
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--signal);
-    align-self: center;
-  }
-  .soon__agent[data-tone='review'] .soon__dot {
-    background: var(--machine);
-  }
-  .soon__agent-name {
-    font-weight: 600;
-    color: var(--ink);
-  }
-  .soon__agent-state {
-    font-size: var(--step-micro);
+  .o-lab {
+    position: absolute;
+    font-family: var(--font-system);
+    font-size: clamp(0.55rem, 1.1vw, 0.75rem);
     letter-spacing: var(--track-label);
     text-transform: uppercase;
     color: var(--machine);
   }
-  .soon__agent[data-tone='review'] .soon__agent-state {
-    color: var(--signal);
-  }
-  .soon__agent-task {
-    grid-column: 1 / -1;
-    margin-top: 0.35rem;
-    font-size: var(--step-micro);
+  .o-lab--hub em {
+    display: block;
+    font-style: normal;
+    font-size: 0.85em;
     color: var(--machine);
+    opacity: 0.75;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  .o-lab--vac {
+    text-align: center;
+    opacity: 0.85;
   }
 
-  .soon__hub {
-    position: relative;
-    padding: 1rem 1.1rem 1.1rem;
-    border: 1px solid var(--rule-strong);
-    background: var(--paper-deep);
+  .soon__bubbles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
-  .soon__hub-name {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.55rem;
+  .o-bub {
+    position: absolute;
+    max-width: clamp(11rem, 24%, 15rem);
+    padding: 0.55rem 0.7rem 0.6rem;
+    background: var(--paper-deep);
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px 10px 10px 10px;
+    font-size: var(--step-micro);
+    line-height: 1.45;
+    color: var(--ink-muted);
+  }
+  .o-bub::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 12px;
+    width: 9px;
+    height: 9px;
+    background: var(--paper-deep);
+    border-left: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule-strong);
+    transform: rotate(45deg);
+  }
+  .o-bub > b {
+    display: block;
+    margin-bottom: 0.15rem;
     font-weight: 620;
     color: var(--ink);
   }
-  .soon__hub-role {
-    font-size: var(--step-micro);
-    letter-spacing: var(--track-label);
-    text-transform: uppercase;
-    color: var(--machine);
+  /* the head office's figure stands above its bubble — the tail points up */
+  .o-bub--hub {
+    border-radius: 10px 3px 10px 10px;
+  }
+  .o-bub--hub::after {
+    left: auto;
+    right: 18px;
+    top: -5px;
+    border: none;
+    border-left: 1px solid var(--rule-strong);
+    border-top: 1px solid var(--rule-strong);
+  }
+  .o-dots {
+    opacity: 0;
+    position: absolute;
+    display: inline-flex;
+    gap: 4px;
+  }
+  .o-dots i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--machine);
+  }
+  .soon[data-anim] .o-dots {
+    opacity: 1;
+  }
+  .soon[data-anim] .o-dots i {
+    animation: o-dot 900ms ease-in-out infinite;
+  }
+  .soon[data-anim] .o-dots i:nth-child(2) {
+    animation-delay: 150ms;
+  }
+  .soon[data-anim] .o-dots i:nth-child(3) {
+    animation-delay: 300ms;
+  }
+  @keyframes o-dot {
+    0%,
+    60%,
+    100% {
+      transform: none;
+      opacity: 0.5;
+    }
+    30% {
+      transform: translateY(-3px);
+      opacity: 1;
+    }
+  }
+  .soon[data-anim] .o-text {
+    opacity: 0;
+  }
+
+  /* Under 40rem the plan is too small to carry floating bubbles — they become
+     a tidy list right below it, same elements, no duplication. */
+  @media (max-width: 40rem) {
+    .soon__bubbles {
+      position: static;
+      display: grid;
+      gap: 0.6rem;
+      margin-top: 0.9rem;
+    }
+    .o-bub {
+      position: static;
+      max-width: none;
+    }
+    .o-bub::after {
+      display: none;
+    }
+    .o-dots {
+      display: none;
+    }
+    .soon .o-text {
+      opacity: 1 !important;
+    }
+  }
+
+  .soon__reports {
+    margin-top: clamp(1.25rem, 3vh, 2rem);
   }
   .soon__reports-label {
-    margin-top: 1rem;
     color: var(--machine);
   }
-  .soon__reports {
+  .soon__reports-list {
     margin-top: 0.5rem;
     display: grid;
+  }
+  @media (min-width: 48rem) {
+    .soon__reports-list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(1rem, 3vw, 2.5rem);
+    }
   }
   .soon__report {
     display: flex;
@@ -294,10 +643,14 @@ const s = dict.soon;
     flex-shrink: 0;
   }
 
-  /* ---- b) the camera ---- */
+  /* ============ b) the camera ============ */
+  .soon__camwrap {
+    margin-top: clamp(1.75rem, 4vh, 2.75rem);
+    max-width: 68rem;
+  }
   .soon__cam {
     position: relative;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     border: 1px solid var(--rule);
     background:
       repeating-linear-gradient(to right, transparent 0 calc(12.5% - 1px), rgba(244, 241, 232, 0.035) calc(12.5% - 1px) 12.5%),
@@ -328,83 +681,119 @@ const s = dict.soon;
   .soon__cam-name {
     margin-left: auto;
   }
-  .soon__scene {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
   .soon__scanline {
     position: absolute;
     left: 0;
     right: 0;
     top: -22%;
-    height: 16%;
+    height: 9%;
+    z-index: 2;
     background: linear-gradient(
       to bottom,
       transparent,
-      rgba(244, 241, 232, 0.045) 46%,
-      rgba(244, 241, 232, 0.1) 52%,
+      rgba(244, 241, 232, 0.03) 44%,
+      rgba(244, 241, 232, 0.06) 52%,
       transparent
     );
     pointer-events: none;
   }
-  .soon__desk {
-    position: absolute;
-    left: 6%;
-    bottom: 12%;
-    width: 24%;
-    height: 13%;
-    border: 1px solid var(--rule-strong);
-    background: rgba(244, 241, 232, 0.04);
-  }
-  .soon__clerk {
-    position: absolute;
-    left: 14%;
-    bottom: 25.5%;
-    width: 4.2%;
-    aspect-ratio: 10 / 21;
-    border-radius: 999px 999px 4px 4px;
-    background: color-mix(in srgb, var(--ink) 55%, transparent);
-  }
-  .soon__queue {
-    position: absolute;
-    left: 39%;
-    right: 10%;
-    bottom: 13%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-  .soon__person {
-    width: 5.5%;
-    aspect-ratio: 10 / 21;
-    border-radius: 999px 999px 4px 4px;
-    background: color-mix(in srgb, var(--ink) 78%, transparent);
-  }
-  .soon__detect {
-    position: absolute;
-    left: 35.5%;
-    right: 7%;
-    top: 40%;
-    bottom: 9%;
-    z-index: 2;
-  }
-  .soon__detect-frame {
+  .soon__scene {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    overflow: visible;
+    z-index: 1;
   }
-  .soon__detect-frame path {
+
+  .c-horizon {
+    stroke: rgba(244, 241, 232, 0.07);
+    stroke-width: 1;
+  }
+  .c-desk {
+    fill: rgba(244, 241, 232, 0.04);
+    stroke: var(--rule-strong);
+    stroke-width: 1.2;
+  }
+  .c-screen {
+    stroke: var(--machine);
+    stroke-width: 2;
+  }
+  .c-sil-head,
+  .c-sil-body {
+    fill: color-mix(in srgb, var(--ink) 42%, transparent);
+  }
+  .c-qbox {
     fill: none;
     stroke: var(--signal);
-    stroke-width: 1.5px;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
   }
+
+  .c-flesh,
+  .c-flesh-head {
+    stroke: rgba(244, 241, 232, var(--flesh, 0.16));
+    stroke-linecap: round;
+    fill: none;
+  }
+  .c-flesh-head {
+    fill: rgba(244, 241, 232, var(--flesh, 0.16));
+    stroke: none;
+  }
+  .c-flesh--torso {
+    stroke-width: 16;
+  }
+  .c-flesh--arm {
+    stroke-width: 9;
+  }
+  .c-flesh--fore {
+    stroke-width: 8;
+  }
+  .c-flesh--thigh {
+    stroke-width: 11;
+  }
+  .c-flesh--shin {
+    stroke-width: 9;
+  }
+  .c-bone {
+    stroke: var(--signal);
+    stroke-width: 2;
+    stroke-linecap: round;
+    fill: none;
+  }
+  .c-joint {
+    fill: var(--signal);
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+  }
+  .c-box {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 1.1;
+    opacity: 0.85;
+  }
+  .c-id {
+    font-family: var(--font-system);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    fill: var(--signal);
+  }
+  [data-pivot] {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+  }
+  /* Static stance without JS: the walkers stand mid-scene, mid-stride. */
+  .c-walkA .c-walk-x {
+    transform: translateX(640px);
+  }
+  .c-walkB .c-walk-x {
+    transform: translateX(250px);
+  }
+
   .soon__detect-chip {
     position: absolute;
-    left: 0;
-    bottom: calc(100% + 0.45rem);
+    left: 30%;
+    bottom: 37.2%;
+    z-index: 2;
     font-size: var(--step-micro);
     letter-spacing: var(--track-label);
     text-transform: uppercase;
@@ -414,7 +803,7 @@ const s = dict.soon;
 
   .soon__alert {
     margin-top: 0.9rem;
-    max-width: 32rem;
+    max-width: 34rem;
     padding: 0.8rem 0.95rem 0.85rem;
     border: 1px solid var(--rule-strong);
     background: var(--paper-deep);
@@ -439,17 +828,14 @@ const s = dict.soon;
   }
 
   /*
-   * Initial states for the animated pieces. Gated on [data-anim], which ONLY the
-   * section's own script sets, and only when motion is allowed — so no-JS, a
-   * failed script and prefers-reduced-motion all read the static final frame
-   * without a single rule of fallback CSS.
+   * Initial states for everything the entrance animates. Gated on [data-anim],
+   * which ONLY the section's own script sets, and only when motion is allowed —
+   * no-JS, a failed script and prefers-reduced-motion all read the static
+   * final frame with zero fallback rules.
    */
-  .soon[data-anim] .soon__agent,
-  .soon[data-anim] .soon__hub,
-  .soon[data-anim] .soon__report,
-  .soon[data-anim] .soon__person,
-  .soon[data-anim] .soon__detect-chip,
-  .soon[data-anim] .soon__alert {
+  .soon[data-anim] :is(.o-furn, .o-fig, .o-lab, .o-bub, .o-dash, .o-plus),
+  .soon[data-anim] :is(.c-furn, .c-fig, .c-walk, .c-joint, .c-id),
+  .soon[data-anim] :is([data-report], .soon__detect-chip, .soon__alert) {
     opacity: 0;
   }
 </style>
@@ -466,14 +852,12 @@ const s = dict.soon;
     type JSAnimation,
   } from 'animejs';
 
-  const SVG_NS = 'http://www.w3.org/2000/svg';
   /* mirrors --ease-enter / --ease-snap from the design tokens */
   const enter = cubicBezier(0.16, 1, 0.3, 1);
   const snap = cubicBezier(0.34, 1.4, 0.64, 1);
 
-  /* Idle loops (pulses, scanline, REC blink) only tick while the section is on
-     screen — the page has enough machinery running without an off-screen camera
-     scanning for nobody. */
+  /* Idle loops (walkers, pulses, scanline) only tick while the section is on
+     screen — no camera scans for nobody. */
   const loops: JSAnimation[] = [];
   function trackLoops(section: HTMLElement) {
     let visible = true;
@@ -486,7 +870,7 @@ const s = dict.soon;
     io.observe(section);
   }
 
-  function once(el: Element, cb: () => void, threshold = 0.3) {
+  function once(el: Element, cb: () => void, threshold = 0.25) {
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
@@ -498,159 +882,138 @@ const s = dict.soon;
     io.observe(el);
   }
 
-  /* ---- a) the office: wires from every agent into the hub ---- */
-
-  interface Wires {
-    paths: SVGPathElement[];
-    pulses: SVGCircleElement[];
-    layout: () => void;
-  }
-
-  function buildWires(office: HTMLElement): Wires | null {
-    const svg = office.querySelector<SVGSVGElement>('[data-wires]');
-    const agents = Array.from(office.querySelectorAll<HTMLElement>('[data-agent]'));
-    const hub = office.querySelector<HTMLElement>('[data-hub]');
-    if (!svg || !hub || !agents.length) return null;
-
-    const paths = agents.map(() => {
-      const p = document.createElementNS(SVG_NS, 'path');
-      p.setAttribute('fill', 'none');
-      p.setAttribute('stroke-width', '1.5');
-      p.style.stroke = 'var(--signal-edge)';
-      svg.appendChild(p);
-      return p;
-    });
-    const pulses = agents.map(() => {
-      const c = document.createElementNS(SVG_NS, 'circle');
-      c.setAttribute('r', '3');
-      c.style.fill = 'var(--signal)';
-      c.style.opacity = '0';
-      svg.appendChild(c);
-      return c;
+  const drawablesOf = (els: Iterable<SVGElement>) =>
+    Array.from(els, (el) => {
+      const d = createDrawable(el)[0]!;
+      utils.set(d, { draw: '0 0' });
+      return d;
     });
 
-    const layout = () => {
-      const fb = office.getBoundingClientRect();
-      const hb = hub.getBoundingClientRect();
-      agents.forEach((agent, i) => {
-        const ab = agent.getBoundingClientRect();
-        let d: string;
-        if (hb.top >= ab.bottom - 4) {
-          /* stacked layout: leave from the card's foot, arrive at the hub's head */
-          const ax = ab.left + ab.width / 2 - fb.left;
-          const ay = ab.bottom - fb.top;
-          const bx = hb.left + (hb.width * (i + 1)) / (agents.length + 1) - fb.left;
-          const by = hb.top - fb.top;
-          const bend = Math.max(24, (by - ay) * 0.6);
-          d = `M ${ax} ${ay} C ${ax} ${ay + bend}, ${bx} ${by - bend}, ${bx} ${by}`;
-        } else {
-          /* side-by-side: right edge of the card into the hub's left edge */
-          const ax = ab.right - fb.left;
-          const ay = ab.top + ab.height / 2 - fb.top;
-          const bx = hb.left - fb.left;
-          const by = hb.top + hb.height / 2 - fb.top + (i - (agents.length - 1) / 2) * 16;
-          const bend = Math.max(28, (bx - ax) * 0.5);
-          d = `M ${ax} ${ay} C ${ax + bend} ${ay}, ${bx - bend} ${by}, ${bx} ${by}`;
-        }
-        paths[i]!.setAttribute('d', d);
-      });
-    };
+  /* ---- a) the office: walls draw, the staff arrives, reports travel ---- */
 
-    layout();
-    return { paths, pulses, layout };
-  }
-
-  function armOffice(office: HTMLElement, wires: Wires) {
-    const agents = office.querySelectorAll<HTMLElement>('[data-agent]');
-    const hub = office.querySelector<HTMLElement>('[data-hub]');
-    const reports = office.querySelectorAll<HTMLElement>('[data-report]');
-    const dots = office.querySelectorAll<HTMLElement>('[data-dot]');
-    if (!hub) return;
-
-    const drawables = wires.paths.map((p) => createDrawable(p)[0]!);
-    for (const d of drawables) utils.set(d, { draw: '0 0' });
-
-    let pulseAnims: JSAnimation[] = [];
-    const startPulses = () => {
-      pulseAnims = wires.paths.map((path, i) => {
-        const mp = createMotionPath(path);
-        const anim = animate(wires.pulses[i]!, {
-          translateX: mp.translateX,
-          translateY: mp.translateY,
-          opacity: [
-            { to: 0.95, duration: 140 },
-            { to: 0.95, duration: 760 },
-            { to: 0, duration: 200 },
-          ],
-          duration: 1100,
-          ease: 'inOutSine',
-          delay: 500 + i * 1400,
-          loop: true,
-          loopDelay: 2900,
-        });
-        loops.push(anim);
-        return anim;
-      });
-    };
-
-    /* Re-route the wires when the grid re-wraps. The travelling pulses hold a
-       snapshot of the old geometry, so they are rebuilt on the new one. */
-    let frame = 0;
-    const ro = new ResizeObserver(() => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        wires.layout();
-        if (!pulseAnims.length) return;
-        for (const a of pulseAnims) {
-          const at = loops.indexOf(a);
-          if (at !== -1) loops.splice(at, 1);
-          a.cancel();
-        }
-        startPulses();
-      });
-    });
-    ro.observe(office);
+  function armOffice(office: HTMLElement) {
+    const $$ = <T extends Element>(sel: string) => Array.from(office.querySelectorAll<T>(sel));
+    const walls = drawablesOf($$<SVGPathElement>('.o-wall'));
+    const routes = $$<SVGPathElement>('.o-ppath');
+    const routeDraw = drawablesOf(routes);
+    const pulses = $$<SVGCircleElement>('.o-pulse');
+    const furn = $$<SVGGElement>('.o-furn');
+    const figs = $$<SVGGElement>('.o-fig');
+    const labels = $$<HTMLElement>('.o-lab');
+    const bubbles = $$<HTMLElement>('.o-bub');
+    const dots = $$<HTMLElement>('.o-dots');
+    const texts = $$<HTMLElement>('.o-text');
+    const reports = $$<HTMLElement>('[data-report]');
+    const dash = office.querySelector<SVGPathElement>('.o-dash');
+    const plus = office.querySelector<SVGPathElement>('.o-plus');
+    const hubdot = office.querySelector<SVGCircleElement>('.o-hubdot');
 
     const tl = createTimeline({
       autoplay: false,
-      defaults: { ease: enter, duration: 700 },
+      defaults: { ease: enter },
       onComplete: () => {
+        /* reports travel the corridors into the head office, forever */
+        routes.forEach((path, i) => {
+          const mp = createMotionPath(path);
+          loops.push(
+            animate(pulses[i]!, {
+              translateX: mp.translateX,
+              translateY: mp.translateY,
+              opacity: [
+                { to: 0.95, duration: 140 },
+                { to: 0.95, duration: 820 },
+                { to: 0, duration: 200 },
+              ],
+              duration: 1160,
+              ease: 'inOutSine',
+              delay: 500 + i * 1500,
+              loop: true,
+              loopDelay: 3300,
+            }),
+          );
+        });
         loops.push(
-          animate(dots, {
-            scale: [1, 1.55],
-            duration: 820,
+          animate(bubbles, {
+            translateY: [0, -3],
+            duration: 1700,
             alternate: true,
             loop: true,
             ease: 'inOutSine',
-            delay: stagger(260),
+            delay: stagger(320),
           }),
         );
-        startPulses();
+        if (hubdot) {
+          loops.push(
+            animate(hubdot, { scale: [1, 1.7], duration: 800, alternate: true, loop: true, ease: 'inOutSine' }),
+          );
+        }
+        if (plus) {
+          loops.push(
+            animate(plus, { opacity: [1, 0.35], duration: 1200, alternate: true, loop: true, ease: 'inOutSine' }),
+          );
+        }
       },
     });
-    tl.add(agents, { opacity: [0, 1], translateY: [18, 0], delay: stagger(140) })
-      .add(hub, { opacity: [0, 1], translateY: [20, 0] }, '-=480')
-      .add(drawables, { draw: '0 1', duration: 850, delay: stagger(150), ease: 'inOut(2)' }, '-=420')
-      .add(reports, { opacity: [0, 1], translateX: [-12, 0], duration: 520, delay: stagger(170) }, '-=380');
+
+    tl.add(walls, { draw: '0 1', duration: 850, delay: stagger(130), ease: 'inOut(2)' })
+      .add([dash, plus].filter(Boolean) as SVGPathElement[], { opacity: [0, 1], duration: 450 }, '-=350')
+      .add(furn, { opacity: [0, 1], duration: 380, delay: stagger(70) }, '-=450')
+      .add(figs, { opacity: [0, 1], scale: [0.6, 1], duration: 430, delay: stagger(100), ease: snap }, '-=250')
+      .add(labels, { opacity: [0, 1], duration: 380, delay: stagger(70) }, '-=350')
+      .add(routeDraw, { draw: '0 1', duration: 650, delay: stagger(120), ease: 'inOut(2)' }, '-=250')
+      .add(bubbles, { opacity: [0, 1], scale: [0.85, 1], translateY: [8, 0], duration: 460, delay: stagger(280), ease: snap }, '-=450')
+      /* each bubble types for ~a second, then the message replaces the dots —
+         the same 280 ms stagger keeps every bubble's beats aligned */
+      .add(dots, { opacity: [1, 0], duration: 220, delay: stagger(280) }, '-=900')
+      .add(texts, { opacity: [0, 1], duration: 300, delay: stagger(280) }, '-=740')
+      .add(reports, { opacity: [0, 1], translateY: [10, 0], duration: 430, delay: stagger(140) }, '-=500');
 
     once(office, () => tl.play());
   }
 
-  /* ---- b) the camera: the queue grows, the box notices, one message leaves ---- */
+  /* ---- b) the camera: a skeleton is built over every person, then tracked ---- */
+
+  function gait(walker: HTMLElement, x: { from: number; to: number; duration: number }) {
+    const swing = (sel: string, from: number, to: number, delay = 0) => {
+      const parts = walker.querySelectorAll<SVGGElement>(sel);
+      if (parts.length) {
+        loops.push(
+          animate(parts, { rotate: [from, to], duration: 480, alternate: true, loop: true, ease: 'inOutSine', delay }),
+        );
+      }
+    };
+    swing('.c-leg-l', -26, 26);
+    swing('.c-leg-l .c-shin', 4, 40, 120);
+    swing('.c-leg-r', 26, -26);
+    swing('.c-leg-r .c-shin', 40, 4, 120);
+    swing('.c-arm-l', 24, -24);
+    swing('.c-arm-r', -24, 24);
+    swing('.c-fore', -8, -30, 100);
+    const bob = walker.querySelector<SVGGElement>('.c-bob');
+    if (bob) {
+      loops.push(animate(bob, { translateY: [0, -2.5], duration: 480, alternate: true, loop: true, ease: 'inOutSine' }));
+    }
+    const rail = walker.querySelector<SVGGElement>('.c-walk-x');
+    if (rail) {
+      loops.push(animate(rail, { translateX: [x.from, x.to], duration: x.duration, loop: true, ease: 'linear' }));
+    }
+  }
 
   function armCam(cam: HTMLElement) {
-    const persons = cam.querySelectorAll<HTMLElement>('[data-person]');
-    const boxPath = cam.querySelector<SVGPathElement>('[data-detect-path]');
+    const $$ = <T extends Element>(sel: string) => Array.from(cam.querySelectorAll<T>(sel));
+    const furn = $$<SVGGElement>('.c-furn');
+    const clerk = cam.querySelector<SVGGElement>('.c-fig:not(.c-fig--q)');
+    const queue = $$<SVGGElement>('.c-fig--q');
+    const qboxEl = cam.querySelector<SVGPathElement>('.c-qbox');
     const chip = cam.querySelector<HTMLElement>('[data-chip]');
     const countEl = cam.querySelector<HTMLElement>('[data-count]');
-    const alertEl = cam.querySelector<HTMLElement>('[data-alert]');
+    const alertEl = cam.parentElement?.querySelector<HTMLElement>('[data-alert]');
     const scanline = cam.querySelector<HTMLElement>('[data-scanline]');
     const rec = cam.querySelector<HTMLElement>('[data-rec]');
-    if (!boxPath || !chip || !countEl || !alertEl) return;
+    const walkers = $$<HTMLElement>('.c-walk');
+    if (!qboxEl || !chip || !countEl || !alertEl) return;
 
-    const drawable = createDrawable(boxPath)[0]!;
-    utils.set(drawable, { draw: '0 0' });
+    const qbox = drawablesOf([qboxEl])[0]!;
     const count = { n: 0 };
     countEl.textContent = '0';
 
@@ -658,55 +1021,50 @@ const s = dict.soon;
       autoplay: false,
       defaults: { ease: enter },
       onComplete: () => {
-        const frame = boxPath.closest('svg');
-        if (frame) {
-          loops.push(
-            animate(frame, {
-              opacity: [1, 0.55],
-              duration: 1150,
-              alternate: true,
-              loop: true,
-              ease: 'inOutSine',
-            }),
-          );
-        }
+        gait(walkers[0]!, { from: 1080, to: -140, duration: 16000 });
+        if (walkers[1]) gait(walkers[1], { from: -140, to: 1120, duration: 21000 });
+        loops.push(animate(qboxEl, { opacity: [1, 0.5], duration: 1150, alternate: true, loop: true, ease: 'inOutSine' }));
       },
     });
-    tl.add(persons, {
-      opacity: [0, 1],
-      translateY: [12, 0],
-      scale: [0.7, 1],
-      duration: 420,
-      delay: stagger(320),
-      ease: snap,
-    })
-      .add(drawable, { draw: '0 1', duration: 700, ease: 'inOut(2)' }, '-=1400')
-      .add(chip, { opacity: [0, 1], duration: 300 }, '-=1250')
+
+    tl.add(furn.concat(clerk ? [clerk] : []), { opacity: [0, 1], duration: 400, delay: stagger(90) })
+      .add(queue, { opacity: [0, 1], translateY: [10, 0], scale: [0.7, 1], duration: 400, delay: stagger(260), ease: snap }, '-=150')
+      .add(qbox, { draw: '0 1', duration: 650, ease: 'inOut(2)' }, '-=1100')
+      .add(chip, { opacity: [0, 1], duration: 280 }, '-=950')
       .add(
         count,
         {
           n: 6,
-          duration: 1350,
+          duration: 1250,
           ease: 'linear',
           modifier: utils.round(0),
           onUpdate: () => {
             countEl.textContent = String(count.n);
           },
         },
-        '-=1300',
-      )
-      .add(alertEl, { opacity: [0, 1], translateY: [14, 0], duration: 620, ease: snap }, '+=260');
+        '-=1250',
+      );
+
+    for (const [i, walker] of walkers.entries()) {
+      const bones = drawablesOf(walker.querySelectorAll<SVGLineElement>('.c-bone'));
+      const joints = walker.querySelectorAll<SVGCircleElement>('.c-joint');
+      const boxDraw = drawablesOf(walker.querySelectorAll<SVGPathElement>('.c-box'));
+      const idTag = walker.querySelector<SVGTextElement>('.c-id');
+      tl.add(walker, { opacity: [0, 1], duration: 320 }, i === 0 ? '-=250' : '-=700')
+        .add(bones, { draw: '0 1', duration: 150, delay: stagger(80), ease: 'out(2)' })
+        .add(joints, { opacity: [0, 1], scale: [0, 1], duration: 240, delay: stagger(50), ease: snap }, '-=650')
+        .add(boxDraw, { draw: '0 1', duration: 480, ease: 'inOut(2)' }, '-=200');
+      if (idTag) tl.add(idTag, { opacity: [0, 1], duration: 280 }, '-=200');
+    }
+
+    tl.add(alertEl, { opacity: [0, 1], translateY: [14, 0], duration: 600, ease: snap }, '+=250');
 
     once(cam, () => {
       if (scanline) {
-        loops.push(
-          animate(scanline, { top: ['-22%', '122%'], duration: 3400, loop: true, ease: 'linear' }),
-        );
+        loops.push(animate(scanline, { top: ['-22%', '122%'], duration: 3600, loop: true, ease: 'linear' }));
       }
       if (rec) {
-        loops.push(
-          animate(rec, { opacity: [1, 0.12], duration: 640, alternate: true, loop: true, ease: 'inOutSine' }),
-        );
+        loops.push(animate(rec, { opacity: [1, 0.12], duration: 640, alternate: true, loop: true, ease: 'inOutSine' }));
       }
       tl.play();
     });
@@ -715,18 +1073,11 @@ const s = dict.soon;
   const section = document.getElementById('soon');
   if (section) {
     try {
-      const office = section.querySelector<HTMLElement>('[data-office]');
-      const cam = section.querySelector<HTMLElement>('[data-cam]');
-      /* The wires exist in every mode — under reduced motion they are simply
-         drawn in full, a diagram rather than a performance. */
-      const wires = office ? buildWires(office) : null;
-
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        /* static diagram: keep the wires routed across re-wraps, nothing plays */
-        if (office && wires) new ResizeObserver(() => wires.layout()).observe(office);
-      } else {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         section.setAttribute('data-anim', '');
-        if (office && wires) armOffice(office, wires);
+        const office = section.querySelector<HTMLElement>('[data-office]');
+        const cam = section.querySelector<HTMLElement>('.soon__cam');
+        if (office) armOffice(office);
         if (cam) armCam(cam);
         trackLoops(section);
       }
