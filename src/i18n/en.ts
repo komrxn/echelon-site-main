@@ -480,6 +480,60 @@ export const en: Dict = {
     bottom: 'We’ll name the exact figure on the demo. It’s well below another salary.',
   },
 
+  soon: {
+    label: 'What’s next',
+    title: 'The next shift is already being built',
+    lead: 'The only section on this page about the future — which is why it is labelled as one. Two things we are building now. No dates: we’ll show them when they are ready.',
+    badge: 'Soon',
+    office: {
+      kicker: 'Virtual office',
+      title: 'Not one assistant — a staff',
+      text: 'You assemble permanent AI employees for your own tasks — by talking, the way you would brief a new hire. Each one has its own memory and its own channels. They work on their own, and after every shift they report to the main assistant — the one running your day above. It knows everything they know.',
+      note: 'Built by conversation: describe the job — get the employee.',
+      agents: [
+        {
+          name: 'Recruiter',
+          task: '“installer” vacancy · 14 replies, 3 worth a call',
+          state: 'working',
+          tone: 'run',
+        },
+        {
+          name: 'Content',
+          task: 'channel post ready, waiting for your “yes”',
+          state: 'in review',
+          tone: 'review',
+        },
+        {
+          name: 'Researcher',
+          task: 'three suppliers’ prices — table by 08:00',
+          state: 'working',
+          tone: 'run',
+        },
+      ],
+      hubName: 'Main assistant',
+      hubRole: 'takes the reports',
+      reportsLabel: 'Overnight reports',
+      reports: [
+        { at: '02:14', text: 'Recruiter: three ready for an interview' },
+        { at: '02:40', text: 'Content: the post is in your review' },
+        { at: '03:05', text: 'Researcher: Sanjar is 8% cheaper' },
+      ],
+    },
+    cctv: {
+      kicker: 'AI video monitoring',
+      title: 'Cameras that understand what they see',
+      text: 'Echelon connects to the cameras you already have and watches them itself. A queue at the till, an empty floor at rush hour, movement in the warehouse after closing — you get a message the moment it happens, not a recording you find a week later.',
+      note: 'The footage stays with you. It watches the stream and records events — it does not hoard an archive.',
+      camName: 'Till 2',
+      camTime: '18:42',
+      rec: 'REC',
+      queueLabel: 'queue',
+      alertTitle: 'Message to the owner',
+      alert: 'Till 2: a queue of six, one till open out of two.',
+      alertMeta: 'Telegram · 18:42',
+    },
+  },
+
   handover: {
     label: 'Shift handover',
     title: 'This is what a day looks like when the business stops waiting for you',

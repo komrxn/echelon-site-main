@@ -574,7 +574,9 @@ test('SEO head survives the redesign', async ({ page }) => {
     h1s: document.querySelectorAll('h1').length,
   }));
   expect(head.description?.length).toBeGreaterThan(80);
-  expect(head.canonical).toBe('https://samandarmansurkhodjaev2713.github.io/echelon-site-main/');
+  /* The canonical follows astro.config's `site` — repointed when the repo moved
+     to publish under komrxn (60b0da7); the pin here had stayed on the old origin. */
+  expect(head.canonical).toBe('https://komrxn.github.io/echelon-site-main/');
   expect(head.hreflang).toEqual(['ru', 'en', 'uz', 'x-default']);
   expect(head.ogImage).toContain('/echelon-site-main/og/og-ru.png');
   expect(head.ogTitle).toBeTruthy();

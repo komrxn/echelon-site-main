@@ -19,6 +19,7 @@
     "@fontsource-variable/golos-text": "^5.2.0",
     "@fontsource-variable/jetbrains-mono": "^5.2.0",
     "@fontsource/spectral": "^5.2.0",
+    "animejs": "^4.5.0",
     "astro": "^5.13.0"
   },
   "devDependencies": {

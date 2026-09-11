@@ -38,6 +38,7 @@ export function shiftIndex(dict: Dict): ShiftEntry[] {
     { id: 'night', name: dict.night.title },
     { id: 'voice', name: dict.voice.label },
     { id: 'ledger', name: dict.ledger.label },
+    { id: 'soon', name: dict.soon.label },
     { id: 'handover', name: dict.handover.label },
   ];
 }

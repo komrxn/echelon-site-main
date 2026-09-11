@@ -482,6 +482,60 @@ export const uz: Dict = {
     bottom: 'Aniq raqamni demoda aytamiz. U yana bitta odamning maoshidan sezilarli arzon.',
   },
 
+  soon: {
+    label: 'Keyingi qadam',
+    title: 'Keyingi smena allaqachon qurilmoqda',
+    lead: 'Bu sahifadagi kelajak haqidagi yagona bo’lim — shuning uchun shunday belgilangan. Hozir qurayotgan ikki narsamiz. Sanasiz: tayyor bo’lganda ko’rsatamiz.',
+    badge: 'Tez orada',
+    office: {
+      kicker: 'Virtual ofis',
+      title: 'Bitta yordamchi emas — butun shtat',
+      text: 'O’z vazifalaringiz uchun doimiy AI-xodimlarni yig’asiz — xuddi jamoaga yangi odamga tushuntirgandek, suhbat orqali. Har birining o’z xotirasi va o’z kanallari bor. O’zlari ishlaydi, har smenadan keyin esa bosh yordamchiga hisobot beradi — yuqorida kuningizni yuritayotganiga. U ular bilgan hamma narsani biladi.',
+      note: 'Suhbat bilan yig’iladi: vazifani tushuntirdingiz — xodim tayyor.',
+      agents: [
+        {
+          name: 'Rekruter',
+          task: '«montajchi» vakansiyasi · 14 javob, 3 tasi arziydi',
+          state: 'ishlayapti',
+          tone: 'run',
+        },
+        {
+          name: 'Kontent',
+          task: 'kanal uchun post tayyor, «ha» deyishingizni kutmoqda',
+          state: 'tekshiruvda',
+          tone: 'review',
+        },
+        {
+          name: 'Tadqiqotchi',
+          task: 'uch ta’minotchi narxlari — jadval 08:00 ga',
+          state: 'ishlayapti',
+          tone: 'run',
+        },
+      ],
+      hubName: 'Bosh yordamchi',
+      hubRole: 'hisobotlarni qabul qiladi',
+      reportsLabel: 'Tungi hisobotlar',
+      reports: [
+        { at: '02:14', text: 'Rekruter: uch kishi suhbatga tayyor' },
+        { at: '02:40', text: 'Kontent: post sizning tekshiruvingizda' },
+        { at: '03:05', text: 'Tadqiqotchi: Sanjarda 8% arzonroq' },
+      ],
+    },
+    cctv: {
+      kicker: 'AI videokuzatuv',
+      title: 'Ko’rganini tushunadigan kameralar',
+      text: 'Echelon sizda allaqachon o’rnatilgan kameralarga ulanadi va ularga o’zi qaraydi. Kassadagi navbat, qizg’in soatda bo’sh zal, yopilgandan keyin ombordagi harakat — voqea yuz bergan zahoti xabar olasiz, bir haftadan keyin yozuvdan qidirmaysiz.',
+      note: 'Video sizda qoladi. U oqimni kuzatadi va voqealarni yozib boradi — arxiv yig’maydi.',
+      camName: 'Kassa 2',
+      camTime: '18:42',
+      rec: 'REC',
+      queueLabel: 'navbat',
+      alertTitle: 'Egasiga xabar',
+      alert: 'Kassa 2: olti kishilik navbat, ikkitadan bitta kassa ochiq.',
+      alertMeta: 'Telegram · 18:42',
+    },
+  },
+
   handover: {
     label: 'Smenani topshirish',
     title: 'Biznes sizni kutishdan to’xtagan kun mana shunday ko’rinadi',

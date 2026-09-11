@@ -22,6 +22,7 @@ import Boundary from '../components/Boundary.astro';
 import Night from '../components/Night.astro';
 import Voice from '../components/Voice.astro';
 import Ledger from '../components/Ledger.astro';
+import Soon from '../components/Soon.astro';
 import Handover from '../components/Handover.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import '../styles/ui.css';
@@ -71,6 +72,8 @@ const dict = getDict(locale);
     <Night dict={dict} />
     <Voice dict={dict} locale={locale} />
     <Ledger dict={dict} />
+    <!-- WHAT'S NEXT — the deep of the night, where the next shift is built -->
+    <Soon dict={dict} />
     <Seam {...dict.seams.dawn} />
     <!-- HANDOVER -->
     <Handover dict={dict} locale={locale} />
