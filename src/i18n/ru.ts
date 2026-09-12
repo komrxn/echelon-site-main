@@ -527,6 +527,7 @@ export const ru = {
         vacancy: 'Вакансия',
       },
       hubRole: 'принимает доклады',
+      counterLabel: 'докладов сегодня',
       bubbles: {
         content: 'Пост готов, отдал вам на ревью',
         researcher: 'Свожу цены трёх поставщиков в таблицу',

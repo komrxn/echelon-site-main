@@ -501,6 +501,7 @@ export const uz: Dict = {
         vacancy: 'Vakansiya',
       },
       hubRole: 'hisobotlarni qabul qiladi',
+      counterLabel: 'bugungi hisobotlar',
       bubbles: {
         content: 'Post tayyor, sizga tekshiruvga yubordim',
         researcher: 'Uch ta’minotchi narxlarini jadvalga yig’yapman',

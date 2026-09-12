@@ -499,6 +499,7 @@ export const en: Dict = {
         vacancy: 'Vacancy',
       },
       hubRole: 'takes the reports',
+      counterLabel: 'reports today',
       bubbles: {
         content: 'The post is ready, sent to you for review',
         researcher: 'Compiling three suppliers’ prices into a table',

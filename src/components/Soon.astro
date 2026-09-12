@@ -87,6 +87,21 @@ const s = dict.soon;
                 <line class="o-screen" x1="810" y1="128" x2="850" y2="128"></line>
               </g>
 
+              <!-- the small furniture that makes it an office -->
+              <g class="o-furn">
+                <rect class="o-cab" x="256" y="20" width="64" height="14"></rect>
+                <rect class="o-cab" x="256" y="218" width="64" height="14"></rect>
+                <rect class="o-cab" x="256" y="416" width="64" height="14"></rect>
+                <rect class="o-cab" x="580" y="586" width="64" height="14"></rect>
+                <rect class="o-cab" x="900" y="312" width="64" height="14"></rect>
+                <circle class="o-plant" cx="638" cy="34" r="7"></circle>
+                <circle class="o-plant" cx="626" cy="28" r="5"></circle>
+                <circle class="o-plant" cx="648" cy="26" r="5"></circle>
+                <circle class="o-chair" cx="155" cy="318" r="9"></circle>
+                <circle class="o-chair" cx="155" cy="517" r="9"></circle>
+                <circle class="o-chair" cx="830" cy="196" r="10"></circle>
+              </g>
+
               <!-- reports, laid on the head desk while a courier is there -->
               <rect class="o-deskpaper" data-deskpaper="rec" x="770" y="132" width="10" height="13"></rect>
               <rect class="o-deskpaper" data-deskpaper="coder" x="800" y="132" width="10" height="13"></rect>
@@ -136,6 +151,7 @@ const s = dict.soon;
               <span class="o-lab o-lab--hub" style="left:67.4%;top:3.2%">
                 {s.office.rooms.hub}
                 <em>{s.office.hubRole}</em>
+                <em class="o-count">{s.office.counterLabel}: <b data-repcount>2</b></em>
               </span>
               <span class="o-lab o-lab--vac" style="left:68.4%;top:76.6%;width:27.6%">{s.office.rooms.vacancy}</span>
             </div>
@@ -223,6 +239,7 @@ const s = dict.soon;
                 <line class="c-cap c-cap--arm" x1="4" y1="-24" x2="14" y2="-8"></line>
                 <line class="c-cap c-cap--arm" x1="7" y1="-22" x2="18" y2="-12"></line>
                 <line class="c-cap c-cap--fore" x1="18" y1="-12" x2="24" y2="-26"></line>
+                <circle class="c-glow" data-glow cx="24" cy="-30" r="9"></circle>
                 <rect class="c-phone" data-phone x="20.5" y="-35" width="7" height="11" rx="1.5"></rect>
               </g>
               <g class="c-sk">
@@ -324,24 +341,40 @@ const s = dict.soon;
             <g class="c-furn">
               <rect class="c-desk" x="60" y="398" width="190" height="52"></rect>
               <rect class="c-reg" x="168" y="386" width="28" height="12"></rect>
+              <rect class="c-item" data-item="0" x="216" y="390" width="14" height="8"></rect>
+              <rect class="c-item" data-item="1" x="216" y="390" width="10" height="8"></rect>
             </g>
 
-            <!-- P3 · a customer walks in and joins the queue -->
+            <!-- the customer's track, dotted in as the system follows him -->
+            <g class="c-trailg" aria-hidden="true">
+              <circle class="c-trail" cx="930" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="887" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="844" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="801" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="758" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="715" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="672" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="629" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="586" cy="452" r="2"></circle>
+              <circle class="c-trail" cx="543" cy="452" r="2"></circle>
+            </g>
+
+            <!-- P3 · a customer walks in and joins the queue (side profile) -->
             <g class="c-walk" transform="translate(0 405)">
               <g class="c-walk-x" data-rail>
                 <g transform="scale(0.72)">
                 <g class="c-bob">
-                  <g class="c-arm c-arm-r" data-pivot>
-                    <line class="c-cap c-cap--arm" x1="0" y1="-46" x2="0" y2="-18"></line>
-                    <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18"></line>
-                    <circle class="c-joint" cx="0" cy="-18" r="3"></circle>
+                  <g class="c-arm c-armF" data-pivot>
+                    <line class="c-cap c-cap--arm" x1="-2" y1="-46" x2="2" y2="-20"></line>
+                    <line class="c-bone" x1="-2" y1="-46" x2="2" y2="-20"></line>
+                    <circle class="c-joint" cx="2" cy="-20" r="3"></circle>
                     <g class="c-fore" data-pivot>
-                      <line class="c-cap c-cap--fore" x1="0" y1="-18" x2="0" y2="6"></line>
-                      <line class="c-bone" x1="0" y1="-18" x2="0" y2="6"></line>
-                      <circle class="c-joint" cx="0" cy="6" r="2.6"></circle>
+                      <line class="c-cap c-cap--fore" x1="2" y1="-20" x2="8" y2="2"></line>
+                      <line class="c-bone" x1="2" y1="-20" x2="8" y2="2"></line>
+                      <circle class="c-joint" cx="8" cy="2" r="2.6"></circle>
                     </g>
                   </g>
-                  <g class="c-leg c-leg-r" data-pivot>
+                  <g class="c-leg c-legF" data-pivot>
                     <line class="c-cap c-cap--thighw" x1="0" y1="0" x2="0" y2="34"></line>
                     <line class="c-bone" x1="0" y1="0" x2="0" y2="34"></line>
                     <circle class="c-joint" cx="0" cy="34" r="3"></circle>
@@ -352,15 +385,15 @@ const s = dict.soon;
                     </g>
                   </g>
                   <g class="c-torso">
-                    <line class="c-cap c-cap--torsow" x1="0" y1="0" x2="0" y2="-52"></line>
-                    <line class="c-bone" x1="0" y1="0" x2="0" y2="-52"></line>
+                    <line class="c-cap c-cap--torsow" x1="0" y1="0" x2="-4" y2="-52"></line>
+                    <line class="c-bone" x1="0" y1="0" x2="-4" y2="-52"></line>
                     <circle class="c-joint" cx="0" cy="0" r="3.4"></circle>
-                    <circle class="c-joint" cx="0" cy="-46" r="3.4"></circle>
+                    <circle class="c-joint" cx="-4" cy="-46" r="3.4"></circle>
                   </g>
-                  <circle class="c-caphead c-caphead--w" cx="0" cy="-66" r="11"></circle>
-                  <line class="c-bone" x1="0" y1="-52" x2="0" y2="-60"></line>
-                  <circle class="c-joint" cx="0" cy="-63" r="3"></circle>
-                  <g class="c-leg c-leg-l" data-pivot>
+                  <circle class="c-caphead c-caphead--w" cx="-7" cy="-66" r="10.5"></circle>
+                  <line class="c-bone" x1="-4" y1="-52" x2="-6" y2="-59"></line>
+                  <circle class="c-joint" cx="-6" cy="-62" r="3"></circle>
+                  <g class="c-leg c-legN" data-pivot>
                     <line class="c-cap c-cap--thighw" x1="0" y1="0" x2="0" y2="34"></line>
                     <line class="c-bone" x1="0" y1="0" x2="0" y2="34"></line>
                     <circle class="c-joint" cx="0" cy="34" r="3"></circle>
@@ -370,26 +403,26 @@ const s = dict.soon;
                       <circle class="c-joint" cx="0" cy="66" r="2.6"></circle>
                     </g>
                   </g>
-                  <g class="c-arm c-arm-l" data-pivot>
-                    <line class="c-cap c-cap--arm" x1="0" y1="-46" x2="0" y2="-18"></line>
-                    <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18"></line>
-                    <circle class="c-joint" cx="0" cy="-18" r="3"></circle>
+                  <g class="c-arm c-armN" data-pivot>
+                    <line class="c-cap c-cap--arm" x1="-2" y1="-46" x2="2" y2="-20"></line>
+                    <line class="c-bone" x1="-2" y1="-46" x2="2" y2="-20"></line>
+                    <circle class="c-joint" cx="2" cy="-20" r="3"></circle>
                     <g class="c-fore" data-pivot>
-                      <line class="c-cap c-cap--fore" x1="0" y1="-18" x2="0" y2="6"></line>
-                      <line class="c-bone" x1="0" y1="-18" x2="0" y2="6"></line>
-                      <circle class="c-joint" cx="0" cy="6" r="2.6"></circle>
+                      <line class="c-cap c-cap--fore" x1="2" y1="-20" x2="8" y2="2"></line>
+                      <line class="c-bone" x1="2" y1="-20" x2="8" y2="2"></line>
+                      <circle class="c-joint" cx="8" cy="2" r="2.6"></circle>
                     </g>
                   </g>
-                  <g class="c-tag-g">
-                    <path class="c-pbox" d="M -34 -84 H 34 V 70 H -34 Z"></path>
-                    <text
-                      class="p-tag"
-                      data-tag="walker"
-                      data-walking={s.cctv.status.walking}
-                      data-final={s.cctv.status.queued}
-                      x="-34"
-                      y="-92">{s.cctv.status.queued}</text>
-                  </g>
+                </g>
+                <g class="c-tag-g">
+                  <path class="c-pbox" d="M -36 -84 H 30 V 70 H -36 Z"></path>
+                  <text
+                    class="p-tag"
+                    data-tag="walker"
+                    data-walking={s.cctv.status.walking}
+                    data-final={s.cctv.status.queued}
+                    x="-36"
+                    y="-92">{s.cctv.status.queued}</text>
                 </g>
                 </g>
               </g>
@@ -519,6 +552,19 @@ const s = dict.soon;
   .o-hubdot {
     fill: var(--signal);
   }
+  .o-cab {
+    fill: rgba(244, 241, 232, 0.04);
+    stroke: var(--rule-strong);
+    stroke-width: 1;
+  }
+  .o-plant {
+    fill: rgba(120, 140, 96, 0.55);
+  }
+  .o-chair {
+    fill: none;
+    stroke: var(--rule-strong);
+    stroke-width: 1.2;
+  }
   .o-deskpaper {
     fill: var(--ink);
     opacity: 0;
@@ -578,6 +624,19 @@ const s = dict.soon;
   .o-lab--vac {
     text-align: center;
     opacity: 0.85;
+  }
+  .o-count {
+    display: block;
+    font-style: normal;
+    margin-top: 0.3rem;
+    font-size: 0.85em;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    color: var(--machine);
+  }
+  .o-count b {
+    color: var(--signal);
+    font-weight: 500;
   }
 
   .soon__bubbles {
@@ -800,6 +859,21 @@ const s = dict.soon;
     fill: rgba(244, 241, 232, 0.1);
     stroke: var(--rule-strong);
     stroke-width: 1;
+  }
+  .c-trail {
+    fill: var(--signal);
+    opacity: 0;
+  }
+  .c-item {
+    fill: rgba(244, 241, 232, 0.35);
+    opacity: 0;
+  }
+  .c-glow {
+    fill: rgba(244, 241, 232, 0.07);
+  }
+  .c-armF,
+  .c-legF {
+    opacity: 0.55;
   }
   .c-crate {
     fill: rgba(244, 241, 232, 0.06);
@@ -1037,7 +1111,13 @@ const s = dict.soon;
   function courier(
     el: SVGGElement,
     route: Array<{ x: number; y: number }>,
-    opts: { delay: number; rest: number; bubble: HTMLElement | null; paper: SVGElement | null },
+    opts: {
+      delay: number;
+      rest: number;
+      bubble: HTMLElement | null;
+      paper: SVGElement | null;
+      onDeliver?: () => void;
+    },
   ) {
     const inner = el.querySelector<SVGGElement>('.o-wi');
     const legA = el.querySelector<SVGLineElement>('.o-legA');
@@ -1074,6 +1154,7 @@ const s = dict.soon;
         ...(i === route.length - 2 ? { onComplete: legsOff } : {}),
       });
     });
+    if (opts.onDeliver) tl.call(opts.onDeliver);
     tl.add(paperInHand, { opacity: 0, duration: 160 });
     if (opts.paper) tl.add(opts.paper, { opacity: [0, 1], duration: 220 }, '-=80');
     if (opts.bubble) {
@@ -1108,6 +1189,18 @@ const s = dict.soon;
     const dash = office.querySelector<SVGPathElement>('.o-dash');
     const plus = office.querySelector<SVGPathElement>('.o-plus');
     const hubdot = office.querySelector<SVGCircleElement>('.o-hubdot');
+    const repCount = office.querySelector<HTMLElement>('[data-repcount]');
+    let delivered = 0;
+    if (repCount) repCount.textContent = '0';
+    const deliver = () => {
+      delivered += 1;
+      if (repCount) repCount.textContent = String(delivered);
+    };
+    for (const key of ['rec', 'coder'] as const) {
+      const el = office.querySelector<SVGGElement>(`[data-courier="${key}"]`);
+      const home = ROUTES[key]![0]!;
+      if (el) utils.set(el, { translateX: home.x, translateY: home.y });
+    }
 
     const tl = createTimeline({
       autoplay: false,
@@ -1119,12 +1212,14 @@ const s = dict.soon;
           rest: 5200,
           bubble: office.querySelector('[data-handoff="rec"]'),
           paper: office.querySelector('[data-deskpaper="rec"]'),
+          onDeliver: deliver,
         });
         courier(office.querySelector('[data-courier="coder"]')!, ROUTES.coder!, {
           delay: 9800,
           rest: 5200,
           bubble: office.querySelector('[data-handoff="coder"]'),
           paper: office.querySelector('[data-deskpaper="coder"]'),
+          onDeliver: deliver,
         });
         loops.push(
           animate(bubbles, {
@@ -1221,15 +1316,21 @@ const s = dict.soon;
         );
       }
     };
-    swing('.c-leg-l', -26, 26);
-    swing('.c-leg-l .c-shin', 4, 40, 120);
-    swing('.c-leg-r', 26, -26);
-    swing('.c-leg-r .c-shin', 40, 4, 120);
-    swing('.c-arm-l', 24, -24);
-    swing('.c-arm-r', -24, 24);
-    swing('.c-fore', -8, -30, 100);
+    /* a profile walk cycle, facing the direction of travel (leftward):
+       the thigh swings further forward than back, the knee folds on the
+       recovery swing and lands straight, the arms counter-swing. */
+    swing('.c-legN', -30, 22);
+    swing('.c-legN .c-shin', 48, 4, 150);
+    swing('.c-legF', 22, -30);
+    swing('.c-legF .c-shin', 4, 48, 150);
+    swing('.c-armN', 24, -20);
+    swing('.c-armN .c-fore', -34, -10, 120);
+    swing('.c-armF', -20, 24);
+    swing('.c-armF .c-fore', -10, -34, 120);
     const bobEl = walker.querySelector<SVGGElement>('.c-bob');
     if (bobEl) {
+      /* a walker leans into his own direction */
+      utils.set(bobEl, { rotate: -5 });
       gaits.push(animate(bobEl, { translateY: [0, -2.5], duration: 480, alternate: true, loop: true, ease: 'inOutSine', autoplay: false }));
     }
     loops.push(...gaits);
@@ -1237,7 +1338,7 @@ const s = dict.soon;
     const gaitsOff = () => {
       gaits.forEach((g) => g.pause());
       utils.set(walker.querySelectorAll('[data-pivot]'), { rotate: 0 });
-      if (bobEl) utils.set(bobEl, { translateY: 0 });
+      if (bobEl) utils.set(bobEl, { translateY: 0, rotate: 0 });
     };
 
     const timer = { t: 227 };
@@ -1254,8 +1355,8 @@ const s = dict.soon;
     M.add([...people, ...furn], { opacity: [0, 1], duration: 500, delay: stagger(110) }, 0)
       .add(walker, { opacity: [0, 1], duration: 400 }, 300)
       .add(rail, {
-        translateX: [1070, 504],
-        duration: 6800,
+        translateX: [960, 504],
+        duration: 5500,
         ease: 'linear',
         onBegin: gaitsOn,
         onComplete: gaitsOff,
@@ -1301,6 +1402,12 @@ const s = dict.soon;
       onBegin: () => setTag(wTag, A.walking),
     }, 3250);
 
+    /* his track is dotted in behind him */
+    const trail = cam.querySelectorAll<SVGCircleElement>('.c-trail');
+    if (trail.length) {
+      M.add(trail, { opacity: [0, 0.5], duration: 220, ease: 'linear', delay: stagger(520) }, 760);
+    }
+
     /* the queue is counted */
     M.add(qboxEl, { opacity: [0, 1], duration: 200 }, 4600);
     M.add(dQ, {
@@ -1319,22 +1426,22 @@ const s = dict.soon;
       }, 5000);
 
     /* he joins: the box widens, the count becomes 4, the pose flips */
-    M.call(() => setTag(wTag, A.final(wTag)), 7300);
-    M.add(qboxEl, { d: ['M 300 360 H 478 V 468 H 300 Z', 'M 300 360 H 540 V 468 H 300 Z'], duration: 480, ease: 'inOut(2)' }, 7350);
+    M.call(() => setTag(wTag, A.final(wTag)), 6050);
+    M.add(qboxEl, { d: ['M 300 360 H 478 V 468 H 300 Z', 'M 300 360 H 540 V 468 H 300 Z'], duration: 480, ease: 'inOut(2)' }, 6100);
     M.add(qn, {
       n: 4,
       duration: 220,
       modifier: utils.round(0),
       onUpdate: () => (countEl.textContent = String(qn.n)),
-    }, 7500);
+    }, 6250);
 
     /* one message leaves for the owner */
-    M.add(alertEl, { opacity: [0, 1], translateY: [14, 0], duration: 620, ease: snap }, 8300);
+    M.add(alertEl, { opacity: [0, 1], translateY: [14, 0], duration: 620, ease: snap }, 7100);
 
     /* the scene holds and lives, then the annotations dissolve and it replays */
     M.add(
       [
-        ...Array.from(cam.querySelectorAll('.c-bone, .c-joint, .c-pbox, .p-tag')),
+        ...Array.from(cam.querySelectorAll('.c-bone, .c-joint, .c-pbox, .p-tag, .c-trail')),
         qboxEl,
         chip,
         alertEl,
@@ -1352,11 +1459,34 @@ const s = dict.soon;
       if (scanarm) loops.push(animate(scanarm, { rotate: [-2, 9], duration: 1300, alternate: true, loop: true, ease: 'inOutSine' }));
       const phoneEl = cam.querySelector<SVGRectElement>('[data-phone]');
       if (phoneEl) loops.push(animate(phoneEl, { translateY: [0, 1.4], duration: 900, alternate: true, loop: true, ease: 'inOutSine' }));
+      cam.querySelectorAll<SVGRectElement>('.c-item').forEach((item, i) => {
+        loops.push(
+          animate(item, {
+            translateX: [0, -118],
+            opacity: [
+              { to: 0.55, duration: 300 },
+              { to: 0.55, duration: 1700 },
+              { to: 0, duration: 400 },
+            ],
+            duration: 2400,
+            ease: 'linear',
+            loop: true,
+            loopDelay: 800,
+            delay: 600 + i * 1600,
+          }),
+        );
+      });
+      const glow = cam.querySelector<SVGCircleElement>('[data-glow]');
+      if (glow) loops.push(animate(glow, { opacity: [0.5, 1], scale: [0.9, 1.1], duration: 1100, alternate: true, loop: true, ease: 'inOutSine' }));
       const sways = cam.querySelectorAll<SVGGElement>('.c-sway');
       if (sways.length) {
         loops.push(animate(sways, { rotate: [-0.9, 0.9], duration: 2400, alternate: true, loop: true, ease: 'inOutSine', delay: stagger(500) }));
       }
       loops.push(M);
+      /* the rail leaves its CSS resting spot only now, in the same tick the
+         story starts — at rest the walker (and his tag) must stay inside the
+         frame, which the robustness gate checks at every viewport */
+      utils.set(rail, { translateX: 960 });
       M.play();
     });
   }
