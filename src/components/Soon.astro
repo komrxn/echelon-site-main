@@ -7,29 +7,27 @@ interface Props {
 
 const { dict } = Astro.props;
 const s = dict.soon;
-
-/* The camera's cast. Local skeleton coordinates put the hip at (0,0) and the
-   feet at y=66; the outer group places the hip in the scene, `scale` sets the
-   apparent depth. ID chips are deliberately locale-free — a tracker's label is
-   the same in any language. */
-const WALKERS = [
-  { cls: 'c-walkA', tag: 'ID 04 · 98%', scale: 1.25, y: 430, x: 640, flesh: 0.16 },
-  { cls: 'c-walkB', tag: 'ID 07 · 96%', scale: 0.8, y: 368, x: 250, flesh: 0.11 },
-];
-const QUEUE_X = [320, 375, 430, 485, 540, 595];
 ---
 
 <!--
   WHAT'S NEXT — the only section on the page about the future, and it says so.
   Deep in the night world (03:00), between the ledger and the dawn seam.
 
-  Two drawn instruments, not screenshots: a floor plan of the virtual office
-  (rooms, mini employees, speech bubbles, reports travelling to the head
-  office), and a camera frame where the system builds a skeleton over every
-  person it tracks. Everything ships in its FINAL state; the [data-anim]
-  attribute — set only by this section's own script when motion is allowed —
-  is what arms the hidden initial states. No JS, a failed import and
-  prefers-reduced-motion all land on the same fully legible static frame.
+  Two drawn instruments, both choreographed rather than looping noise:
+
+  a) the office floor plan LIVES — couriers stand up, carry their report down
+     the corridor to the head office, hand it over and walk back while the
+     others keep typing;
+
+  b) the camera scene tells one story on a loop — silhouettes first, then the
+     skeleton is built joint by joint over every person, then the system READS
+     the pose (working / on the phone / walking / queued), a timer runs on the
+     idle employee, the queue grows, and one message leaves for the owner.
+
+  Everything ships in its FINAL state; the [data-anim] attribute — set only by
+  this section's own script when motion is allowed — arms the hidden initial
+  states. No JS, a failed import and prefers-reduced-motion all land on the
+  same fully legible static frame.
 -->
 <section class="soon band on-ink" id="soon" data-shift="03:00" data-field-surface="0.45">
   <div class="page">
@@ -39,7 +37,7 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       <p class="lead soon__lead">{s.lead}</p>
     </div>
 
-    <!-- a) The virtual office: a floor plan of the AI staff at work. -->
+    <!-- a) The virtual office: the staff at work, reports walked to the head office. -->
     <article class="soon__feature">
       <div class="soon__copy" data-reveal="expand">
         <p class="soon__kicker sys">
@@ -54,90 +52,120 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       <div class="soon__office" data-office>
         <div class="soon__plan">
           <div class="soon__plansvg">
-            <svg viewBox="0 0 1000 540" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <!-- walls, drawn like a technical print -->
-            <path class="o-wall" d="M12 12 H988 V528 H12 Z"></path>
-            <path class="o-wall" d="M340 12 V78 M340 118 V250 M340 290 V422 M340 462 V528"></path>
-            <path class="o-wall" d="M12 184 H340 M12 356 H340"></path>
-            <path class="o-wall" d="M660 12 V150 M660 190 V420 M660 460 V528"></path>
-            <path class="o-wall" d="M660 350 H988"></path>
+            <svg viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <!-- walls, drawn like a technical print -->
+              <path class="o-wall" d="M12 12 H988 V608 H12 Z"></path>
+              <path class="o-wall" d="M340 12 V90 M340 130 V288 M340 328 V486 M340 526 V608"></path>
+              <path class="o-wall" d="M12 210 H340 M12 408 H340"></path>
+              <path class="o-wall" d="M660 12 V150 M660 190 V440 M660 480 V608"></path>
+              <path class="o-wall" d="M660 340 H988"></path>
+              <path class="o-wall" d="M340 440 H470 M510 440 H660"></path>
 
-            <!-- the vacancy: the constructor's empty plot -->
-            <path class="o-dash" d="M684 374 H964 V504 H684 Z"></path>
-            <path class="o-plus" d="M824 406 V434 M810 420 H838"></path>
+              <!-- the vacancy: the constructor's empty plot -->
+              <path class="o-dash" d="M684 366 H964 V584 H684 Z"></path>
+              <path class="o-plus" d="M824 441 V469 M810 455 H838"></path>
 
-            <!-- report routes: every room reports into the head office -->
-            <path class="o-ppath" d="M345 98 C450 98 500 110 530 140 C555 163 590 170 655 170"></path>
-            <path class="o-ppath" d="M345 270 C450 270 490 240 520 205 C545 180 590 170 655 170"></path>
-            <path class="o-ppath" d="M345 442 C460 442 490 380 515 300 C535 235 585 172 655 170"></path>
-            <circle class="o-pulse" r="3.2"></circle>
-            <circle class="o-pulse" r="3.2"></circle>
-            <circle class="o-pulse" r="3.2"></circle>
+              <!-- desks -->
+              <g class="o-furn">
+                <rect class="o-desk" x="80" y="65" width="150" height="34"></rect>
+                <line class="o-screen" x1="140" y1="71" x2="170" y2="71"></line>
+              </g>
+              <g class="o-furn">
+                <rect class="o-desk" x="80" y="263" width="150" height="34"></rect>
+                <line class="o-screen" x1="140" y1="269" x2="170" y2="269"></line>
+              </g>
+              <g class="o-furn">
+                <rect class="o-desk" x="80" y="462" width="150" height="34"></rect>
+                <line class="o-screen" x1="140" y1="468" x2="170" y2="468"></line>
+              </g>
+              <g class="o-furn">
+                <rect class="o-desk" x="400" y="478" width="160" height="34"></rect>
+                <line class="o-screen" x1="465" y1="484" x2="495" y2="484"></line>
+              </g>
+              <g class="o-furn">
+                <rect class="o-desk" x="730" y="120" width="200" height="40"></rect>
+                <line class="o-screen" x1="810" y1="128" x2="850" y2="128"></line>
+              </g>
 
-            <!-- desks -->
-            {
-              [98, 270, 442].map((cy) => (
-                <g class="o-furn">
-                  <rect class="o-desk" x="80" y={cy - 46} width="150" height="34" />
-                  <line class="o-screen" x1="140" y1={cy - 40} x2="170" y2={cy - 40} />
+              <!-- reports, laid on the head desk while a courier is there -->
+              <rect class="o-deskpaper" data-deskpaper="rec" x="770" y="132" width="10" height="13"></rect>
+              <rect class="o-deskpaper" data-deskpaper="coder" x="800" y="132" width="10" height="13"></rect>
+
+              <!-- the seated staff -->
+              <g class="o-fig" data-pop>
+                <circle class="o-head" cx="155" cy="305" r="8"></circle>
+                <rect class="o-body" x="144" y="315" width="22" height="30" rx="10"></rect>
+              </g>
+              <g class="o-fig" data-pop>
+                <circle class="o-head" cx="155" cy="504" r="8"></circle>
+                <rect class="o-body" x="144" y="514" width="22" height="30" rx="10"></rect>
+              </g>
+              <g class="o-fig o-fig--hub" data-pop>
+                <circle class="o-head" cx="830" cy="180" r="9"></circle>
+                <rect class="o-body" x="817" y="191" width="26" height="34" rx="12"></rect>
+                <circle class="o-hubdot" cx="842" cy="170" r="3.5"></circle>
+              </g>
+
+              <!-- the couriers: they walk their reports over -->
+              <g class="o-fig o-walk" data-courier="rec" data-pop>
+                <g class="o-wi">
+                  <line class="o-leg o-legA" x1="-4" y1="-11" x2="-4" y2="0"></line>
+                  <line class="o-leg o-legB" x1="4" y1="-11" x2="4" y2="0"></line>
+                  <rect class="o-wbody" x="-8.5" y="-30" width="17" height="20" rx="8"></rect>
+                  <circle class="o-whead" cx="0" cy="-36" r="6.5"></circle>
+                  <rect class="o-paper" x="9" y="-27" width="7" height="9"></rect>
                 </g>
-              ))
-            }
-            <g class="o-furn">
-              <rect class="o-desk" x="730" y="120" width="200" height="40"></rect>
-              <line class="o-screen" x1="810" y1="128" x2="850" y2="128"></line>
-            </g>
-
-            <!-- the staff -->
-            {
-              [98, 270, 442].map((cy) => (
-                <g class="o-fig" data-pop>
-                  <circle class="o-head" cx="155" cy={cy - 4} r="8" />
-                  <rect class="o-body" x="144" y={cy + 6} width="22" height="30" rx="10" />
+              </g>
+              <g class="o-fig o-walk" data-courier="coder" data-pop>
+                <g class="o-wi">
+                  <line class="o-leg o-legA" x1="-4" y1="-11" x2="-4" y2="0"></line>
+                  <line class="o-leg o-legB" x1="4" y1="-11" x2="4" y2="0"></line>
+                  <rect class="o-wbody" x="-8.5" y="-30" width="17" height="20" rx="8"></rect>
+                  <circle class="o-whead" cx="0" cy="-36" r="6.5"></circle>
+                  <rect class="o-paper" x="9" y="-27" width="7" height="9"></rect>
                 </g>
-              ))
-            }
-            <g class="o-fig o-fig--hub" data-pop>
-              <circle class="o-head" cx="830" cy="180" r="9"></circle>
-              <rect class="o-body" x="817" y="191" width="26" height="34" rx="12"></rect>
-              <circle class="o-hubdot" cx="842" cy="170" r="3.5"></circle>
-            </g>
+              </g>
             </svg>
 
             <!-- room labels ride the plan in every mode -->
             <div class="soon__labels" aria-hidden="true">
-              <span class="o-lab" style="left:2.8%;top:3.8%">{s.office.rooms.recruiter}</span>
-              <span class="o-lab" style="left:2.8%;top:35.6%">{s.office.rooms.content}</span>
-              <span class="o-lab" style="left:2.8%;top:67.4%">{s.office.rooms.researcher}</span>
-              <span class="o-lab o-lab--hub" style="left:67.4%;top:3.8%">
+              <span class="o-lab" style="left:2.8%;top:3.2%">{s.office.rooms.recruiter}</span>
+              <span class="o-lab" style="left:2.8%;top:35.2%">{s.office.rooms.content}</span>
+              <span class="o-lab" style="left:2.8%;top:67.2%">{s.office.rooms.researcher}</span>
+              <span class="o-lab" style="left:35.4%;top:73%">{s.office.rooms.coder}</span>
+              <span class="o-lab o-lab--hub" style="left:67.4%;top:3.2%">
                 {s.office.rooms.hub}
                 <em>{s.office.hubRole}</em>
               </span>
-              <span class="o-lab o-lab--vac" style="left:68.4%;top:84%;width:27.6%">{s.office.rooms.vacancy}</span>
+              <span class="o-lab o-lab--vac" style="left:68.4%;top:76.6%;width:27.6%">{s.office.rooms.vacancy}</span>
             </div>
           </div>
 
           <!-- speech bubbles: who is doing what, right now -->
           <div class="soon__bubbles">
-            <div class="o-bub" style="left:20%;top:2.5%">
-              <b>{s.office.rooms.recruiter}</b>
-              <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="o-text">{s.office.bubbles.recruiter}</span>
-            </div>
-            <div class="o-bub" style="left:20%;top:35%">
+            <div class="o-bub" style="left:19.5%;top:39%">
               <b>{s.office.rooms.content}</b>
               <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="o-text">{s.office.bubbles.content}</span>
             </div>
-            <div class="o-bub" style="left:20%;top:67%">
+            <div class="o-bub" style="left:19.5%;top:71%">
               <b>{s.office.rooms.researcher}</b>
               <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
               <span class="o-text">{s.office.bubbles.researcher}</span>
             </div>
-            <div class="o-bub o-bub--hub" style="left:69%;top:44%">
-              <b>{s.office.rooms.hub}</b>
+            <div class="o-bub" style="left:47%;top:74%">
+              <b>{s.office.rooms.coder}</b>
               <span class="o-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-              <span class="o-text">{s.office.bubbles.hub}</span>
+              <span class="o-text">{s.office.bubbles.coder}</span>
+            </div>
+            <!-- handed-over reports: driven entirely by the courier timelines -->
+            <div class="o-bub o-bub--hand" data-handoff="rec" style="left:63%;top:34%">
+              <b>{s.office.rooms.hub}</b>
+              <span class="o-text" style="opacity:1">{s.office.handoffs.recruiter}</span>
+            </div>
+            <div class="o-bub o-bub--hand" data-handoff="coder" style="left:63%;top:44%">
+              <b>{s.office.rooms.hub}</b>
+              <span class="o-text" style="opacity:1">{s.office.handoffs.coder}</span>
             </div>
           </div>
         </div>
@@ -158,7 +186,7 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       </div>
     </article>
 
-    <!-- b) AI video monitoring: skeletons built and tracked over people. -->
+    <!-- b) AI video monitoring: skeletons built over people, poses read out loud. -->
     <article class="soon__feature">
       <div class="soon__copy" data-reveal="expand">
         <p class="soon__kicker sys">
@@ -170,8 +198,8 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
         <p class="note soon__fnote">{s.cctv.note}</p>
       </div>
 
-      <div class="soon__camwrap" data-cam>
-        <div class="soon__cam">
+      <div class="soon__camwrap" data-cam-wrap>
+        <div class="soon__cam" data-cam>
           <div class="soon__cam-top sys">
             <span class="soon__rec" data-rec aria-hidden="true"></span>
             <span>{s.cctv.rec}</span>
@@ -181,165 +209,195 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
           <span class="soon__scanline" data-scanline aria-hidden="true"></span>
 
           <svg class="soon__scene" viewBox="0 0 1000 562" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <!-- room geometry hint -->
             <line class="c-horizon" x1="0" y1="430" x2="1000" y2="430"></line>
 
-            <!-- background walker, already tracked -->
-            {
-              WALKERS.slice(1).map((w) => (
-                <g class={`c-walk ${w.cls}`} transform={`translate(0 ${w.y})`} style={`--flesh:${w.flesh}`}>
-                  <g class="c-walk-x">
-                    <g transform={`scale(${w.scale})`}>
-                      <g class="c-bob">
-                        <g class="c-arm c-arm-r" data-pivot>
-                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
-                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
-                          <circle class="c-joint" cx="0" cy="-18" r="3" />
-                          <g class="c-fore" data-pivot>
-                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
-                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
-                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-leg c-leg-r" data-pivot>
-                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
-                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
-                          <circle class="c-joint" cx="0" cy="34" r="3" />
-                          <g class="c-shin" data-pivot>
-                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
-                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
-                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-torso">
-                          <line class="c-flesh c-flesh--torso" x1="0" y1="0" x2="0" y2="-52" />
-                          <line class="c-bone" x1="0" y1="0" x2="0" y2="-52" />
-                          <circle class="c-joint" cx="0" cy="0" r="3.4" />
-                          <circle class="c-joint" cx="0" cy="-46" r="3.4" />
-                        </g>
-                        <circle class="c-flesh-head" cx="0" cy="-66" r="11"></circle>
-                        <line class="c-bone" x1="0" y1="-52" x2="0" y2="-60"></line>
-                        <circle class="c-joint" cx="0" cy="-63" r="3"></circle>
-                        <g class="c-leg c-leg-l" data-pivot>
-                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
-                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
-                          <circle class="c-joint" cx="0" cy="34" r="3" />
-                          <g class="c-shin" data-pivot>
-                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
-                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
-                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-arm c-arm-l" data-pivot>
-                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
-                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
-                          <circle class="c-joint" cx="0" cy="-18" r="3" />
-                          <g class="c-fore" data-pivot>
-                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
-                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
-                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-tag">
-                          <path class="c-box" d="M -40 -92 H 40 V 78 H -40 Z" />
-                          <text class="c-id" x="-40" y="-100">{w.tag}</text>
-                        </g>
-                      </g>
-                    </g>
-                  </g>
-                </g>
-              ))
-            }
+            <!-- P2 · the second employee, sitting on a crate, phone at his face -->
+            <g class="p-g" data-person="phone" transform="translate(690 414) scale(0.9)">
+              <g class="c-fl">
+                <rect class="c-crate" x="-12" y="0" width="42" height="30"></rect>
+                <line class="c-cap c-cap--thigh" x1="0" y1="0" x2="20" y2="3"></line>
+                <line class="c-cap c-cap--shin" x1="20" y1="3" x2="20" y2="28"></line>
+                <line class="c-cap c-cap--foot" x1="20" y1="28" x2="28" y2="28"></line>
+                <line class="c-cap c-cap--torso" x1="0" y1="0" x2="9" y2="-27"></line>
+                <circle class="c-caphead" cx="15" cy="-36" r="8"></circle>
+                <line class="c-cap c-cap--arm" x1="4" y1="-24" x2="14" y2="-8"></line>
+                <line class="c-cap c-cap--arm" x1="7" y1="-22" x2="18" y2="-12"></line>
+                <line class="c-cap c-cap--fore" x1="18" y1="-12" x2="24" y2="-26"></line>
+                <rect class="c-phone" data-phone x="20.5" y="-35" width="7" height="11" rx="1.5"></rect>
+              </g>
+              <g class="c-sk">
+                <line class="c-bone" x1="0" y1="0" x2="9" y2="-27"></line>
+                <line class="c-bone" x1="9" y1="-27" x2="13" y2="-31"></line>
+                <line class="c-bone" x1="0" y1="0" x2="20" y2="3"></line>
+                <line class="c-bone" x1="20" y1="3" x2="20" y2="28"></line>
+                <line class="c-bone" x1="7" y1="-22" x2="18" y2="-12"></line>
+                <line class="c-bone" x1="18" y1="-12" x2="24" y2="-26"></line>
+                <circle class="c-joint" cx="0" cy="0" r="3"></circle>
+                <circle class="c-joint" cx="20" cy="3" r="2.6"></circle>
+                <circle class="c-joint" cx="20" cy="28" r="2.4"></circle>
+                <circle class="c-joint" cx="7" cy="-22" r="2.6"></circle>
+                <circle class="c-joint" cx="18" cy="-12" r="2.4"></circle>
+                <circle class="c-joint" cx="24" cy="-26" r="2.4"></circle>
+                <circle class="c-joint" cx="15" cy="-33" r="2.8"></circle>
+              </g>
+              <path class="c-pbox" d="M -24 -54 H 42 V 34 H -24 Z"></path>
+              <text
+                class="p-tag"
+                data-tag="phone"
+                data-analyzing={s.cctv.status.analyzing}
+                data-final={s.cctv.status.phone}
+                x="-24"
+                y="-64">{s.cctv.status.phone} · 4:07</text>
+            </g>
 
-            <!-- the till and the queue -->
+            <!-- the queue: three people waiting, one more on his way -->
+            <g class="p-g p-q" transform="translate(330 452)">
+              <g class="c-sway">
+                <line class="c-cap c-cap--leg" x1="-4" y1="-34" x2="-4" y2="0"></line>
+                <line class="c-cap c-cap--leg" x1="4" y1="-34" x2="4" y2="0"></line>
+                <line class="c-cap c-cap--torso" x1="0" y1="-32" x2="0" y2="-60"></line>
+                <circle class="c-caphead" cx="0" cy="-70" r="8.5"></circle>
+                <line class="c-cap c-cap--arm" x1="0" y1="-56" x2="-8" y2="-38"></line>
+                <line class="c-cap c-cap--arm" x1="0" y1="-56" x2="8" y2="-38"></line>
+              </g>
+            </g>
+            <g class="p-g p-q" transform="translate(388 452)">
+              <g class="c-sway">
+                <line class="c-cap c-cap--leg" x1="-4" y1="-33" x2="-4" y2="0"></line>
+                <line class="c-cap c-cap--leg" x1="4" y1="-33" x2="4" y2="0"></line>
+                <line class="c-cap c-cap--torso" x1="0" y1="-31" x2="0" y2="-58"></line>
+                <circle class="c-caphead" cx="0" cy="-68" r="8"></circle>
+                <line class="c-cap c-cap--fore" x1="-8" y1="-46" x2="7" y2="-43"></line>
+                <line class="c-cap c-cap--fore" x1="8" y1="-47" x2="-7" y2="-42"></line>
+              </g>
+            </g>
+            <g class="p-g p-q" transform="translate(446 452)">
+              <g class="c-sway" style="transform: rotate(2.5deg)">
+                <line class="c-cap c-cap--leg" x1="-5" y1="-34" x2="-3" y2="0"></line>
+                <line class="c-cap c-cap--leg" x1="5" y1="-34" x2="7" y2="0"></line>
+                <line class="c-cap c-cap--torso" x1="0" y1="-32" x2="2" y2="-61"></line>
+                <circle class="c-caphead" cx="3" cy="-71" r="8.5"></circle>
+                <line class="c-cap c-cap--arm" x1="1" y1="-56" x2="10" y2="-40"></line>
+              </g>
+            </g>
+            <path class="c-qbox" data-qbox d="M 300 360 H 478 V 468 H 300 Z"></path>
+
+            <!-- P1 · the cashier, working the till -->
+            <g class="p-g" data-person="cashier" transform="translate(150 446)">
+              <g class="c-fl">
+                <line class="c-cap c-cap--leg" x1="-3" y1="-32" x2="-3" y2="0"></line>
+                <line class="c-cap c-cap--leg" x1="3" y1="-32" x2="3" y2="0"></line>
+                <line class="c-cap c-cap--torso" x1="0" y1="-32" x2="0" y2="-58"></line>
+                <circle class="c-caphead" cx="0" cy="-68" r="8.5"></circle>
+                <line class="c-cap c-cap--arm" x1="0" y1="-54" x2="-8" y2="-38"></line>
+                <g class="c-scanarm" data-scanarm>
+                  <line class="c-cap c-cap--arm" x1="0" y1="-54" x2="12" y2="-44"></line>
+                  <line class="c-cap c-cap--fore" x1="12" y1="-44" x2="26" y2="-48"></line>
+                  <line class="c-bone" x1="0" y1="-54" x2="12" y2="-44"></line>
+                  <line class="c-bone" x1="12" y1="-44" x2="26" y2="-48"></line>
+                  <circle class="c-joint" cx="12" cy="-44" r="2.6"></circle>
+                  <circle class="c-joint" cx="26" cy="-48" r="2.4"></circle>
+                </g>
+              </g>
+              <g class="c-sk">
+                <line class="c-bone" x1="0" y1="-32" x2="0" y2="-58"></line>
+                <line class="c-bone" x1="0" y1="-58" x2="0" y2="-62"></line>
+                <line class="c-bone" x1="-3" y1="-32" x2="-3" y2="0"></line>
+                <line class="c-bone" x1="3" y1="-32" x2="3" y2="0"></line>
+                <line class="c-bone" x1="0" y1="-54" x2="-8" y2="-38"></line>
+                <circle class="c-joint" cx="0" cy="-65" r="2.8"></circle>
+                <circle class="c-joint" cx="0" cy="-54" r="3"></circle>
+                <circle class="c-joint" cx="0" cy="-32" r="3"></circle>
+                <circle class="c-joint" cx="-3" cy="-16" r="2.4"></circle>
+                <circle class="c-joint" cx="3" cy="-16" r="2.4"></circle>
+                <circle class="c-joint" cx="-8" cy="-38" r="2.4"></circle>
+              </g>
+              <path class="c-pbox" d="M -28 -84 H 40 V 4 H -28 Z"></path>
+              <text
+                class="p-tag"
+                data-tag="cashier"
+                data-analyzing={s.cctv.status.analyzing}
+                data-final={s.cctv.status.working}
+                x="-28"
+                y="-92">{s.cctv.status.working}</text>
+            </g>
             <g class="c-furn">
-              <rect class="c-desk" x="40" y="400" width="200" height="48"></rect>
-              <line class="c-screen" x1="120" y1="410" x2="160" y2="410"></line>
+              <rect class="c-desk" x="60" y="398" width="190" height="52"></rect>
+              <rect class="c-reg" x="168" y="386" width="28" height="12"></rect>
             </g>
-            <g class="c-fig">
-              <circle class="c-sil-head" cx="140" cy="366" r="9"></circle>
-              <rect class="c-sil-body" x="127" y="377" width="26" height="42" rx="12"></rect>
-            </g>
-            {
-              QUEUE_X.map((x) => (
-                <g class="c-fig c-fig--q" data-pop>
-                  <circle class="c-sil-head" cx={x} cy="386" r="9" />
-                  <rect class="c-sil-body" x={x - 13} y="398" width="26" height="52" rx="13" />
-                </g>
-              ))
-            }
-            <path class="c-qbox" d="M300 366 H630 V472 H300 Z"></path>
 
-            <!-- foreground walker, tracked live -->
-            {
-              WALKERS.slice(0, 1).map((w) => (
-                <g class={`c-walk ${w.cls}`} transform={`translate(0 ${w.y})`} style={`--flesh:${w.flesh}`}>
-                  <g class="c-walk-x">
-                    <g transform={`scale(${w.scale})`}>
-                      <g class="c-bob">
-                        <g class="c-arm c-arm-r" data-pivot>
-                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
-                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
-                          <circle class="c-joint" cx="0" cy="-18" r="3" />
-                          <g class="c-fore" data-pivot>
-                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
-                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
-                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-leg c-leg-r" data-pivot>
-                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
-                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
-                          <circle class="c-joint" cx="0" cy="34" r="3" />
-                          <g class="c-shin" data-pivot>
-                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
-                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
-                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-torso">
-                          <line class="c-flesh c-flesh--torso" x1="0" y1="0" x2="0" y2="-52" />
-                          <line class="c-bone" x1="0" y1="0" x2="0" y2="-52" />
-                          <circle class="c-joint" cx="0" cy="0" r="3.4" />
-                          <circle class="c-joint" cx="0" cy="-46" r="3.4" />
-                        </g>
-                        <circle class="c-flesh-head" cx="0" cy="-66" r="11"></circle>
-                        <line class="c-bone" x1="0" y1="-52" x2="0" y2="-60"></line>
-                        <circle class="c-joint" cx="0" cy="-63" r="3"></circle>
-                        <g class="c-leg c-leg-l" data-pivot>
-                          <line class="c-flesh c-flesh--thigh" x1="0" y1="0" x2="0" y2="34" />
-                          <line class="c-bone" x1="0" y1="0" x2="0" y2="34" />
-                          <circle class="c-joint" cx="0" cy="34" r="3" />
-                          <g class="c-shin" data-pivot>
-                            <line class="c-flesh c-flesh--shin" x1="0" y1="34" x2="0" y2="66" />
-                            <line class="c-bone" x1="0" y1="34" x2="0" y2="66" />
-                            <circle class="c-joint" cx="0" cy="66" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-arm c-arm-l" data-pivot>
-                          <line class="c-flesh c-flesh--arm" x1="0" y1="-46" x2="0" y2="-18" />
-                          <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18" />
-                          <circle class="c-joint" cx="0" cy="-18" r="3" />
-                          <g class="c-fore" data-pivot>
-                            <line class="c-flesh c-flesh--fore" x1="0" y1="-18" x2="0" y2="6" />
-                            <line class="c-bone" x1="0" y1="-18" x2="0" y2="6" />
-                            <circle class="c-joint" cx="0" cy="6" r="2.6" />
-                          </g>
-                        </g>
-                        <g class="c-tag">
-                          <path class="c-box" d="M -40 -92 H 40 V 78 H -40 Z" />
-                          <text class="c-id" x="-40" y="-100">{w.tag}</text>
-                        </g>
-                      </g>
+            <!-- P3 · a customer walks in and joins the queue -->
+            <g class="c-walk" transform="translate(0 405)">
+              <g class="c-walk-x" data-rail>
+                <g transform="scale(0.72)">
+                <g class="c-bob">
+                  <g class="c-arm c-arm-r" data-pivot>
+                    <line class="c-cap c-cap--arm" x1="0" y1="-46" x2="0" y2="-18"></line>
+                    <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18"></line>
+                    <circle class="c-joint" cx="0" cy="-18" r="3"></circle>
+                    <g class="c-fore" data-pivot>
+                      <line class="c-cap c-cap--fore" x1="0" y1="-18" x2="0" y2="6"></line>
+                      <line class="c-bone" x1="0" y1="-18" x2="0" y2="6"></line>
+                      <circle class="c-joint" cx="0" cy="6" r="2.6"></circle>
                     </g>
                   </g>
+                  <g class="c-leg c-leg-r" data-pivot>
+                    <line class="c-cap c-cap--thighw" x1="0" y1="0" x2="0" y2="34"></line>
+                    <line class="c-bone" x1="0" y1="0" x2="0" y2="34"></line>
+                    <circle class="c-joint" cx="0" cy="34" r="3"></circle>
+                    <g class="c-shin" data-pivot>
+                      <line class="c-cap c-cap--shinw" x1="0" y1="34" x2="0" y2="66"></line>
+                      <line class="c-bone" x1="0" y1="34" x2="0" y2="66"></line>
+                      <circle class="c-joint" cx="0" cy="66" r="2.6"></circle>
+                    </g>
+                  </g>
+                  <g class="c-torso">
+                    <line class="c-cap c-cap--torsow" x1="0" y1="0" x2="0" y2="-52"></line>
+                    <line class="c-bone" x1="0" y1="0" x2="0" y2="-52"></line>
+                    <circle class="c-joint" cx="0" cy="0" r="3.4"></circle>
+                    <circle class="c-joint" cx="0" cy="-46" r="3.4"></circle>
+                  </g>
+                  <circle class="c-caphead c-caphead--w" cx="0" cy="-66" r="11"></circle>
+                  <line class="c-bone" x1="0" y1="-52" x2="0" y2="-60"></line>
+                  <circle class="c-joint" cx="0" cy="-63" r="3"></circle>
+                  <g class="c-leg c-leg-l" data-pivot>
+                    <line class="c-cap c-cap--thighw" x1="0" y1="0" x2="0" y2="34"></line>
+                    <line class="c-bone" x1="0" y1="0" x2="0" y2="34"></line>
+                    <circle class="c-joint" cx="0" cy="34" r="3"></circle>
+                    <g class="c-shin" data-pivot>
+                      <line class="c-cap c-cap--shinw" x1="0" y1="34" x2="0" y2="66"></line>
+                      <line class="c-bone" x1="0" y1="34" x2="0" y2="66"></line>
+                      <circle class="c-joint" cx="0" cy="66" r="2.6"></circle>
+                    </g>
+                  </g>
+                  <g class="c-arm c-arm-l" data-pivot>
+                    <line class="c-cap c-cap--arm" x1="0" y1="-46" x2="0" y2="-18"></line>
+                    <line class="c-bone" x1="0" y1="-46" x2="0" y2="-18"></line>
+                    <circle class="c-joint" cx="0" cy="-18" r="3"></circle>
+                    <g class="c-fore" data-pivot>
+                      <line class="c-cap c-cap--fore" x1="0" y1="-18" x2="0" y2="6"></line>
+                      <line class="c-bone" x1="0" y1="-18" x2="0" y2="6"></line>
+                      <circle class="c-joint" cx="0" cy="6" r="2.6"></circle>
+                    </g>
+                  </g>
+                  <g class="c-tag-g">
+                    <path class="c-pbox" d="M -34 -84 H 34 V 70 H -34 Z"></path>
+                    <text
+                      class="p-tag"
+                      data-tag="walker"
+                      data-walking={s.cctv.status.walking}
+                      data-final={s.cctv.status.queued}
+                      x="-34"
+                      y="-92">{s.cctv.status.queued}</text>
+                  </g>
                 </g>
-              ))
-            }
+                </g>
+              </g>
+            </g>
           </svg>
 
           <span class="soon__detect-chip sys" data-chip>
-            {s.cctv.queueLabel} · <span data-count>6</span>
+            {s.cctv.queueLabel} · <span data-count>4</span>
           </span>
         </div>
 
@@ -437,15 +495,6 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     stroke: var(--machine);
     stroke-width: 1.6;
   }
-  .o-ppath {
-    fill: none;
-    stroke: var(--signal-edge);
-    stroke-width: 1.4;
-  }
-  .o-pulse {
-    fill: var(--signal);
-    opacity: 0;
-  }
   .o-desk {
     fill: rgba(244, 241, 232, 0.05);
     stroke: var(--rule-strong);
@@ -469,6 +518,35 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
   }
   .o-hubdot {
     fill: var(--signal);
+  }
+  .o-deskpaper {
+    fill: var(--ink);
+    opacity: 0;
+  }
+  .o-leg {
+    stroke: var(--ink-soft);
+    stroke-width: 5;
+    stroke-linecap: round;
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+  }
+  .o-wbody {
+    fill: var(--ink-soft);
+  }
+  .o-whead {
+    fill: var(--ink-muted);
+  }
+  .o-paper {
+    fill: var(--ink);
+    stroke: var(--rule-strong);
+    stroke-width: 0.8;
+  }
+  /* no-JS / reduced-motion: the couriers stand at their desks */
+  .o-walk[data-courier='rec'] {
+    transform: translate(170px, 152px);
+  }
+  .o-walk[data-courier='coder'] {
+    transform: translate(452px, 556px);
   }
   [data-pop] {
     transform-box: fill-box;
@@ -536,11 +614,12 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     font-weight: 620;
     color: var(--ink);
   }
-  /* the head office's figure stands above its bubble — the tail points up */
-  .o-bub--hub {
+  .o-bub--hand {
+    opacity: 0;
+    max-width: clamp(12rem, 27%, 17rem);
     border-radius: 10px 3px 10px 10px;
   }
-  .o-bub--hub::after {
+  .o-bub--hand::after {
     left: auto;
     right: 18px;
     top: -5px;
@@ -584,7 +663,7 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       opacity: 1;
     }
   }
-  .soon[data-anim] .o-text {
+  .soon[data-anim] .o-bub:not(.o-bub--hand) .o-text {
     opacity: 0;
   }
 
@@ -604,10 +683,13 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     .o-bub::after {
       display: none;
     }
+    .o-bub--hand {
+      display: none;
+    }
     .o-dots {
       display: none;
     }
-    .soon .o-text {
+    .soon .o-bub .o-text {
       opacity: 1 !important;
     }
   }
@@ -710,50 +792,71 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     stroke-width: 1;
   }
   .c-desk {
-    fill: rgba(244, 241, 232, 0.04);
+    fill: rgba(20, 20, 17, 0.96);
     stroke: var(--rule-strong);
     stroke-width: 1.2;
   }
-  .c-screen {
-    stroke: var(--machine);
-    stroke-width: 2;
+  .c-reg {
+    fill: rgba(244, 241, 232, 0.1);
+    stroke: var(--rule-strong);
+    stroke-width: 1;
   }
-  .c-sil-head,
-  .c-sil-body {
-    fill: color-mix(in srgb, var(--ink) 42%, transparent);
-  }
-  .c-qbox {
-    fill: none;
-    stroke: var(--signal);
-    stroke-width: 1.5;
-    vector-effect: non-scaling-stroke;
+  .c-crate {
+    fill: rgba(244, 241, 232, 0.06);
+    stroke: var(--rule-strong);
+    stroke-width: 1;
   }
 
-  .c-flesh,
-  .c-flesh-head {
-    stroke: rgba(244, 241, 232, var(--flesh, 0.16));
+  /* the people: fat rounded capsule strokes — silhouettes with real limbs */
+  .c-cap {
+    stroke: rgba(244, 241, 232, 0.5);
     stroke-linecap: round;
     fill: none;
   }
-  .c-flesh-head {
-    fill: rgba(244, 241, 232, var(--flesh, 0.16));
-    stroke: none;
+  .p-q .c-cap,
+  .p-q .c-caphead {
+    opacity: 0.82;
   }
-  .c-flesh--torso {
-    stroke-width: 16;
+  .c-caphead {
+    fill: rgba(244, 241, 232, 0.5);
   }
-  .c-flesh--arm {
-    stroke-width: 9;
+  .c-caphead--w {
+    fill: rgba(244, 241, 232, 0.44);
   }
-  .c-flesh--fore {
+  .c-cap--torso {
+    stroke-width: 13;
+  }
+  .c-cap--torsow {
+    stroke-width: 15;
+  }
+  .c-cap--leg {
     stroke-width: 8;
   }
-  .c-flesh--thigh {
-    stroke-width: 11;
-  }
-  .c-flesh--shin {
+  .c-cap--thigh {
     stroke-width: 9;
   }
+  .c-cap--thighw {
+    stroke-width: 11;
+  }
+  .c-cap--shin {
+    stroke-width: 7.5;
+  }
+  .c-cap--shinw {
+    stroke-width: 9;
+  }
+  .c-cap--foot {
+    stroke-width: 5;
+  }
+  .c-cap--arm {
+    stroke-width: 7;
+  }
+  .c-cap--fore {
+    stroke-width: 6;
+  }
+  .c-phone {
+    fill: rgba(244, 241, 232, 0.85);
+  }
+
   .c-bone {
     stroke: var(--signal);
     stroke-width: 2;
@@ -765,34 +868,53 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     transform-box: fill-box;
     transform-origin: 50% 50%;
   }
-  .c-box {
+  .c-pbox {
     fill: none;
     stroke: var(--signal);
     stroke-width: 1.1;
     opacity: 0.85;
+    vector-effect: non-scaling-stroke;
   }
-  .c-id {
+  .c-qbox {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+  .p-tag {
     font-family: var(--font-system);
     font-size: 13px;
     letter-spacing: 0.06em;
+    fill: var(--machine);
+    text-transform: uppercase;
+  }
+  .p-tag.is-event {
     fill: var(--signal);
+  }
+  .c-walk .p-tag {
+    font-size: 17px;
+  }
+  .c-sway {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+  .c-scanarm {
+    transform-box: fill-box;
+    transform-origin: 0% 0%;
   }
   [data-pivot] {
     transform-box: fill-box;
     transform-origin: 50% 0;
   }
-  /* Static stance without JS: the walkers stand mid-scene, mid-stride. */
-  .c-walkA .c-walk-x {
-    transform: translateX(640px);
-  }
-  .c-walkB .c-walk-x {
-    transform: translateX(250px);
+  /* Static stance without JS: the customer already stands at the queue's end. */
+  .c-walk-x {
+    transform: translateX(504px);
   }
 
   .soon__detect-chip {
     position: absolute;
     left: 30%;
-    bottom: 37.2%;
+    bottom: 38%;
     z-index: 2;
     font-size: var(--step-micro);
     letter-spacing: var(--track-label);
@@ -828,13 +950,13 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
   }
 
   /*
-   * Initial states for everything the entrance animates. Gated on [data-anim],
-   * which ONLY the section's own script sets, and only when motion is allowed —
-   * no-JS, a failed script and prefers-reduced-motion all read the static
-   * final frame with zero fallback rules.
+   * Initial states for everything the choreography animates. Gated on
+   * [data-anim], which ONLY the section's own script sets, and only when
+   * motion is allowed — no-JS, a failed script and prefers-reduced-motion all
+   * read the static final frame with zero fallback rules.
    */
-  .soon[data-anim] :is(.o-furn, .o-fig, .o-lab, .o-bub, .o-dash, .o-plus),
-  .soon[data-anim] :is(.c-furn, .c-fig, .c-walk, .c-joint, .c-id),
+  .soon[data-anim] :is(.o-furn, .o-fig, .o-lab, .o-bub:not(.o-bub--hand), .o-dash, .o-plus),
+  .soon[data-anim] :is(.c-furn, .p-g, .c-walk, .c-joint, .p-tag),
   .soon[data-anim] :is([data-report], .soon__detect-chip, .soon__alert) {
     opacity: 0;
   }
@@ -845,7 +967,6 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     animate,
     createTimeline,
     createDrawable,
-    createMotionPath,
     cubicBezier,
     stagger,
     utils,
@@ -856,9 +977,11 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
   const enter = cubicBezier(0.16, 1, 0.3, 1);
   const snap = cubicBezier(0.34, 1.4, 0.64, 1);
 
-  /* Idle loops (walkers, pulses, scanline) only tick while the section is on
-     screen — no camera scans for nobody. */
-  const loops: JSAnimation[] = [];
+  /* Every endless animation registers here; they only tick while the section
+     is on screen — no camera scans for nobody. Timelines qualify too, so the
+     list is typed by the two methods the visibility switch actually uses. */
+  type Pausable = { pause: () => unknown; resume: () => unknown };
+  const loops: Pausable[] = [];
   function trackLoops(section: HTMLElement) {
     let visible = true;
     const io = new IntersectionObserver((entries) => {
@@ -889,20 +1012,98 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       return d;
     });
 
-  /* ---- a) the office: walls draw, the staff arrives, reports travel ---- */
+  /* ---- a) the office ---- */
+
+  const ROUTES: Record<string, Array<{ x: number; y: number }>> = {
+    rec: [
+      { x: 170, y: 152 },
+      { x: 170, y: 110 },
+      { x: 500, y: 110 },
+      { x: 500, y: 172 },
+      { x: 768, y: 172 },
+      { x: 768, y: 228 },
+    ],
+    coder: [
+      { x: 452, y: 556 },
+      { x: 452, y: 470 },
+      { x: 490, y: 446 },
+      { x: 490, y: 240 },
+      { x: 560, y: 174 },
+      { x: 790, y: 174 },
+      { x: 790, y: 252 },
+    ],
+  };
+
+  function courier(
+    el: SVGGElement,
+    route: Array<{ x: number; y: number }>,
+    opts: { delay: number; rest: number; bubble: HTMLElement | null; paper: SVGElement | null },
+  ) {
+    const inner = el.querySelector<SVGGElement>('.o-wi');
+    const legA = el.querySelector<SVGLineElement>('.o-legA');
+    const legB = el.querySelector<SVGLineElement>('.o-legB');
+    const paperInHand = el.querySelector<SVGRectElement>('.o-paper');
+    if (!inner || !legA || !legB || !paperInHand) return;
+
+    utils.set(el, { translateX: route[0]!.x, translateY: route[0]!.y });
+
+    const gaits = [
+      animate(legA, { rotate: [-22, 22], duration: 230, alternate: true, loop: true, ease: 'inOutSine', autoplay: false }),
+      animate(legB, { rotate: [22, -22], duration: 230, alternate: true, loop: true, ease: 'inOutSine', autoplay: false }),
+      animate(inner, { translateY: [0, -1.7], duration: 230, alternate: true, loop: true, ease: 'inOutSine', autoplay: false }),
+    ];
+    loops.push(...gaits);
+    const legsOn = () => gaits.forEach((g) => g.play());
+    const legsOff = () => {
+      gaits.forEach((g) => g.pause());
+      utils.set([legA, legB], { rotate: 0 });
+      utils.set(inner, { translateY: 0 });
+    };
+
+    const SPEED = 0.185; /* px per ms — an unhurried office walk */
+    const leg = (a: { x: number; y: number }, b: { x: number; y: number }) =>
+      Math.hypot(b.x - a.x, b.y - a.y) / SPEED;
+
+    const tl = createTimeline({ loop: true, defaults: { ease: 'linear' }, delay: opts.delay, loopDelay: opts.rest });
+    route.slice(1).forEach((p, i) => {
+      tl.add(el, {
+        translateX: p.x,
+        translateY: p.y,
+        duration: leg(route[i]!, p),
+        ...(i === 0 ? { onBegin: legsOn } : {}),
+        ...(i === route.length - 2 ? { onComplete: legsOff } : {}),
+      });
+    });
+    tl.add(paperInHand, { opacity: 0, duration: 160 });
+    if (opts.paper) tl.add(opts.paper, { opacity: [0, 1], duration: 220 }, '-=80');
+    if (opts.bubble) {
+      tl.add(opts.bubble, { opacity: [0, 1], translateY: [6, 0], duration: 380, ease: snap }, '-=80')
+        .add(opts.bubble, { opacity: 0, duration: 340 }, '+=2500');
+    }
+    if (opts.paper) tl.add(opts.paper, { opacity: 0, duration: 240 }, '-=240');
+    const back = [...route].reverse();
+    back.slice(1).forEach((p, i) => {
+      tl.add(el, {
+        translateX: p.x,
+        translateY: p.y,
+        duration: leg(back[i]!, p),
+        ...(i === 0 ? { onBegin: legsOn } : {}),
+        ...(i === back.length - 2 ? { onComplete: legsOff } : {}),
+      });
+    });
+    tl.add(paperInHand, { opacity: 1, duration: 200 });
+    loops.push(tl);
+  }
 
   function armOffice(office: HTMLElement) {
     const $$ = <T extends Element>(sel: string) => Array.from(office.querySelectorAll<T>(sel));
     const walls = drawablesOf($$<SVGPathElement>('.o-wall'));
-    const routes = $$<SVGPathElement>('.o-ppath');
-    const routeDraw = drawablesOf(routes);
-    const pulses = $$<SVGCircleElement>('.o-pulse');
     const furn = $$<SVGGElement>('.o-furn');
     const figs = $$<SVGGElement>('.o-fig');
     const labels = $$<HTMLElement>('.o-lab');
-    const bubbles = $$<HTMLElement>('.o-bub');
+    const bubbles = $$<HTMLElement>('.o-bub:not(.o-bub--hand)');
     const dots = $$<HTMLElement>('.o-dots');
-    const texts = $$<HTMLElement>('.o-text');
+    const texts = $$<HTMLElement>('.o-bub:not(.o-bub--hand) .o-text');
     const reports = $$<HTMLElement>('[data-report]');
     const dash = office.querySelector<SVGPathElement>('.o-dash');
     const plus = office.querySelector<SVGPathElement>('.o-plus');
@@ -912,25 +1113,18 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       autoplay: false,
       defaults: { ease: enter },
       onComplete: () => {
-        /* reports travel the corridors into the head office, forever */
-        routes.forEach((path, i) => {
-          const mp = createMotionPath(path);
-          loops.push(
-            animate(pulses[i]!, {
-              translateX: mp.translateX,
-              translateY: mp.translateY,
-              opacity: [
-                { to: 0.95, duration: 140 },
-                { to: 0.95, duration: 820 },
-                { to: 0, duration: 200 },
-              ],
-              duration: 1160,
-              ease: 'inOutSine',
-              delay: 500 + i * 1500,
-              loop: true,
-              loopDelay: 3300,
-            }),
-          );
+        /* the office comes to life: couriers, idle drift, the constructor plot */
+        courier(office.querySelector('[data-courier="rec"]')!, ROUTES.rec!, {
+          delay: 600,
+          rest: 5200,
+          bubble: office.querySelector('[data-handoff="rec"]'),
+          paper: office.querySelector('[data-deskpaper="rec"]'),
+        });
+        courier(office.querySelector('[data-courier="coder"]')!, ROUTES.coder!, {
+          delay: 9800,
+          rest: 5200,
+          bubble: office.querySelector('[data-handoff="coder"]'),
+          paper: office.querySelector('[data-deskpaper="coder"]'),
         });
         loops.push(
           animate(bubbles, {
@@ -955,30 +1149,75 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       },
     });
 
-    tl.add(walls, { draw: '0 1', duration: 850, delay: stagger(130), ease: 'inOut(2)' })
+    tl.add(walls, { draw: '0 1', duration: 850, delay: stagger(120), ease: 'inOut(2)' })
       .add([dash, plus].filter(Boolean) as SVGPathElement[], { opacity: [0, 1], duration: 450 }, '-=350')
       .add(furn, { opacity: [0, 1], duration: 380, delay: stagger(70) }, '-=450')
-      .add(figs, { opacity: [0, 1], scale: [0.6, 1], duration: 430, delay: stagger(100), ease: snap }, '-=250')
-      .add(labels, { opacity: [0, 1], duration: 380, delay: stagger(70) }, '-=350')
-      .add(routeDraw, { draw: '0 1', duration: 650, delay: stagger(120), ease: 'inOut(2)' }, '-=250')
-      .add(bubbles, { opacity: [0, 1], scale: [0.85, 1], translateY: [8, 0], duration: 460, delay: stagger(280), ease: snap }, '-=450')
-      /* each bubble types for ~a second, then the message replaces the dots —
-         the same 280 ms stagger keeps every bubble's beats aligned */
-      .add(dots, { opacity: [1, 0], duration: 220, delay: stagger(280) }, '-=900')
-      .add(texts, { opacity: [0, 1], duration: 300, delay: stagger(280) }, '-=740')
+      .add(figs, { opacity: [0, 1], scale: [0.6, 1], duration: 430, delay: stagger(90), ease: snap }, '-=250')
+      .add(labels, { opacity: [0, 1], duration: 380, delay: stagger(60) }, '-=350')
+      .add(bubbles, { opacity: [0, 1], scale: [0.85, 1], translateY: [8, 0], duration: 460, delay: stagger(280), ease: snap }, '-=350')
+      /* each bubble types for ~a second, then the message replaces the dots */
+      .add(dots, { opacity: [1, 0], duration: 220, delay: stagger(280) }, '-=780')
+      .add(texts, { opacity: [0, 1], duration: 300, delay: stagger(280) }, '-=700')
       .add(reports, { opacity: [0, 1], translateY: [10, 0], duration: 430, delay: stagger(140) }, '-=500');
 
     once(office, () => tl.play());
   }
 
-  /* ---- b) the camera: a skeleton is built over every person, then tracked ---- */
+  /* ---- b) the camera: silhouettes → skeletons → the poses read out ---- */
 
-  function gait(walker: HTMLElement, x: { from: number; to: number; duration: number }) {
+  function armCam(wrap: HTMLElement) {
+    const cam = wrap.querySelector<HTMLElement>('[data-cam]');
+    if (!cam) return;
+    const $$ = <T extends Element>(sel: string) => Array.from(cam.querySelectorAll<T>(sel));
+    const people = $$<SVGGElement>('.p-g');
+    const furn = $$<SVGGElement>('.c-furn');
+    const walker = cam.querySelector<SVGGElement>('.c-walk');
+    const rail = cam.querySelector<SVGGElement>('[data-rail]');
+    const qboxEl = cam.querySelector<SVGPathElement>('[data-qbox]');
+    const chip = cam.querySelector<HTMLElement>('[data-chip]');
+    const countEl = cam.querySelector<HTMLElement>('[data-count]');
+    const alertEl = wrap.querySelector<HTMLElement>('[data-alert]');
+    const scanline = cam.querySelector<HTMLElement>('[data-scanline]');
+    const rec = cam.querySelector<HTMLElement>('[data-rec]');
+    if (!walker || !rail || !qboxEl || !chip || !countEl || !alertEl) return;
+
+    const personEls = (name: string) => {
+      const root = cam.querySelector<SVGGElement>(`[data-person="${name}"]`)!;
+      return {
+        root,
+        bones: root.querySelectorAll<SVGLineElement>('.c-bone'),
+        joints: root.querySelectorAll<SVGCircleElement>('.c-joint'),
+        box: root.querySelector<SVGPathElement>('.c-pbox')!,
+        tag: root.querySelector<SVGTextElement>('.p-tag')!,
+      };
+    };
+    const cashier = personEls('cashier');
+    const phone = personEls('phone');
+    const wBones = walker.querySelectorAll<SVGLineElement>('.c-bone');
+    const wJoints = walker.querySelectorAll<SVGCircleElement>('.c-joint');
+    const wBox = walker.querySelector<SVGPathElement>('.c-pbox')!;
+    const wTag = walker.querySelector<SVGTextElement>('.p-tag')!;
+
+    const draw = (els: Iterable<SVGElement>) => drawablesOf(els);
+    const dCash = draw(cashier.bones);
+    const dPhone = draw(phone.bones);
+    const dW = draw(wBones);
+    const dBoxes = draw([cashier.box, phone.box, wBox]);
+    const dQ = draw([qboxEl])[0]!;
+
+    const setTag = (tag: SVGTextElement, text: string, event = false) => {
+      tag.textContent = text;
+      tag.classList.toggle('is-event', event);
+    };
+    const fmt = (t: number) => `${Math.floor(t / 60)}:${String(Math.round(t) % 60).padStart(2, '0')}`;
+
+    /* the walker's gait — driven by the master timeline's callbacks */
+    const gaits: JSAnimation[] = [];
     const swing = (sel: string, from: number, to: number, delay = 0) => {
       const parts = walker.querySelectorAll<SVGGElement>(sel);
       if (parts.length) {
-        loops.push(
-          animate(parts, { rotate: [from, to], duration: 480, alternate: true, loop: true, ease: 'inOutSine', delay }),
+        gaits.push(
+          animate(parts, { rotate: [from, to], duration: 480, alternate: true, loop: true, ease: 'inOutSine', delay, autoplay: false }),
         );
       }
     };
@@ -989,84 +1228,136 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
     swing('.c-arm-l', 24, -24);
     swing('.c-arm-r', -24, 24);
     swing('.c-fore', -8, -30, 100);
-    const bob = walker.querySelector<SVGGElement>('.c-bob');
-    if (bob) {
-      loops.push(animate(bob, { translateY: [0, -2.5], duration: 480, alternate: true, loop: true, ease: 'inOutSine' }));
+    const bobEl = walker.querySelector<SVGGElement>('.c-bob');
+    if (bobEl) {
+      gaits.push(animate(bobEl, { translateY: [0, -2.5], duration: 480, alternate: true, loop: true, ease: 'inOutSine', autoplay: false }));
     }
-    const rail = walker.querySelector<SVGGElement>('.c-walk-x');
-    if (rail) {
-      loops.push(animate(rail, { translateX: [x.from, x.to], duration: x.duration, loop: true, ease: 'linear' }));
-    }
-  }
+    loops.push(...gaits);
+    const gaitsOn = () => gaits.forEach((g) => g.play());
+    const gaitsOff = () => {
+      gaits.forEach((g) => g.pause());
+      utils.set(walker.querySelectorAll('[data-pivot]'), { rotate: 0 });
+      if (bobEl) utils.set(bobEl, { translateY: 0 });
+    };
 
-  function armCam(cam: HTMLElement) {
-    const $$ = <T extends Element>(sel: string) => Array.from(cam.querySelectorAll<T>(sel));
-    const furn = $$<SVGGElement>('.c-furn');
-    const clerk = cam.querySelector<SVGGElement>('.c-fig:not(.c-fig--q)');
-    const queue = $$<SVGGElement>('.c-fig--q');
-    const qboxEl = cam.querySelector<SVGPathElement>('.c-qbox');
-    const chip = cam.querySelector<HTMLElement>('[data-chip]');
-    const countEl = cam.querySelector<HTMLElement>('[data-count]');
-    const alertEl = cam.parentElement?.querySelector<HTMLElement>('[data-alert]');
-    const scanline = cam.querySelector<HTMLElement>('[data-scanline]');
-    const rec = cam.querySelector<HTMLElement>('[data-rec]');
-    const walkers = $$<HTMLElement>('.c-walk');
-    if (!qboxEl || !chip || !countEl || !alertEl) return;
+    const timer = { t: 227 };
+    const qn = { n: 0 };
+    const A = {
+      analyzing: (t: SVGTextElement) => t.dataset.analyzing ?? '',
+      final: (t: SVGTextElement) => t.dataset.final ?? '',
+      walking: wTag.dataset.walking ?? '',
+    };
 
-    const qbox = drawablesOf([qboxEl])[0]!;
-    const count = { n: 0 };
-    countEl.textContent = '0';
+    const M = createTimeline({ autoplay: false, loop: true, loopDelay: 600, defaults: { ease: enter } });
 
-    const tl = createTimeline({
-      autoplay: false,
-      defaults: { ease: enter },
-      onComplete: () => {
-        gait(walkers[0]!, { from: 1080, to: -140, duration: 16000 });
-        if (walkers[1]) gait(walkers[1], { from: -140, to: 1120, duration: 21000 });
-        loops.push(animate(qboxEl, { opacity: [1, 0.5], duration: 1150, alternate: true, loop: true, ease: 'inOutSine' }));
-      },
-    });
+    /* the raw scene: silhouettes only */
+    M.add([...people, ...furn], { opacity: [0, 1], duration: 500, delay: stagger(110) }, 0)
+      .add(walker, { opacity: [0, 1], duration: 400 }, 300)
+      .add(rail, {
+        translateX: [1070, 504],
+        duration: 6800,
+        ease: 'linear',
+        onBegin: gaitsOn,
+        onComplete: gaitsOff,
+      }, 400);
 
-    tl.add(furn.concat(clerk ? [clerk] : []), { opacity: [0, 1], duration: 400, delay: stagger(90) })
-      .add(queue, { opacity: [0, 1], translateY: [10, 0], scale: [0.7, 1], duration: 400, delay: stagger(260), ease: snap }, '-=150')
-      .add(qbox, { draw: '0 1', duration: 650, ease: 'inOut(2)' }, '-=1100')
-      .add(chip, { opacity: [0, 1], duration: 280 }, '-=950')
-      .add(
-        count,
-        {
-          n: 6,
-          duration: 1250,
-          ease: 'linear',
-          modifier: utils.round(0),
-          onUpdate: () => {
-            countEl.textContent = String(count.n);
-          },
-        },
-        '-=1250',
-      );
+    /* the cashier: skeleton built, pose read → «working» */
+    M.add(cashier.joints, { opacity: [0, 1], scale: [0, 1], duration: 220, delay: stagger(50), ease: snap }, 1000)
+      .add(dCash, { draw: '0 1', opacity: [0, 1], duration: 170, delay: stagger(70), ease: 'out(2)' }, 1150)
+      .add(cashier.box, { opacity: [0, 1], duration: 200 }, 2050);
+    M.add(dBoxes[0]!, { draw: '0 1', duration: 420, ease: 'inOut(2)' }, 2050);
+    M.add(cashier.tag, {
+      opacity: [0, 1],
+      duration: 240,
+      onBegin: () => setTag(cashier.tag, A.analyzing(cashier.tag)),
+    }, 2300);
+    M.call(() => setTag(cashier.tag, A.final(cashier.tag)), 3400);
 
-    for (const [i, walker] of walkers.entries()) {
-      const bones = drawablesOf(walker.querySelectorAll<SVGLineElement>('.c-bone'));
-      const joints = walker.querySelectorAll<SVGCircleElement>('.c-joint');
-      const boxDraw = drawablesOf(walker.querySelectorAll<SVGPathElement>('.c-box'));
-      const idTag = walker.querySelector<SVGTextElement>('.c-id');
-      tl.add(walker, { opacity: [0, 1], duration: 320 }, i === 0 ? '-=250' : '-=700')
-        .add(bones, { draw: '0 1', duration: 150, delay: stagger(80), ease: 'out(2)' })
-        .add(joints, { opacity: [0, 1], scale: [0, 1], duration: 240, delay: stagger(50), ease: snap }, '-=650')
-        .add(boxDraw, { draw: '0 1', duration: 480, ease: 'inOut(2)' }, '-=200');
-      if (idTag) tl.add(idTag, { opacity: [0, 1], duration: 280 }, '-=200');
-    }
+    /* the idle employee: skeleton, pose «on the phone», the timer starts */
+    M.add(phone.joints, { opacity: [0, 1], scale: [0, 1], duration: 220, delay: stagger(50), ease: snap }, 2700)
+      .add(dPhone, { draw: '0 1', opacity: [0, 1], duration: 170, delay: stagger(70), ease: 'out(2)' }, 2850)
+      .add(phone.box, { opacity: [0, 1], duration: 200 }, 3750);
+    M.add(dBoxes[1]!, { draw: '0 1', duration: 420, ease: 'inOut(2)' }, 3750);
+    M.add(phone.tag, {
+      opacity: [0, 1],
+      duration: 240,
+      onBegin: () => setTag(phone.tag, A.analyzing(phone.tag)),
+    }, 4000);
+    M.add(timer, {
+      t: [227, 253],
+      duration: 15600,
+      ease: 'linear',
+      onUpdate: () => setTag(phone.tag, `${A.final(phone.tag)} · ${fmt(timer.t)}`, true),
+    }, 5200);
 
-    tl.add(alertEl, { opacity: [0, 1], translateY: [14, 0], duration: 600, ease: snap }, '+=250');
+    /* the walker is tracked on the move */
+    M.add(wJoints, { opacity: [0, 1], scale: [0, 1], duration: 200, delay: stagger(40), ease: snap }, 1900)
+      .add(dW, { draw: '0 1', opacity: [0, 1], duration: 150, delay: stagger(60), ease: 'out(2)' }, 2050)
+      .add(wBox, { opacity: [0, 1], duration: 200 }, 3000);
+    M.add(dBoxes[2]!, { draw: '0 1', duration: 420, ease: 'inOut(2)' }, 3000);
+    M.add(wTag, {
+      opacity: [0, 1],
+      duration: 240,
+      onBegin: () => setTag(wTag, A.walking),
+    }, 3250);
+
+    /* the queue is counted */
+    M.add(qboxEl, { opacity: [0, 1], duration: 200 }, 4600);
+    M.add(dQ, {
+      draw: '0 1',
+      duration: 550,
+      ease: 'inOut(2)',
+      onComplete: () => qboxEl.removeAttribute('stroke-dasharray'),
+    }, 4600)
+      .add(chip, { opacity: [0, 1], duration: 240 }, 4950)
+      .add(qn, {
+        n: [0, 3],
+        duration: 700,
+        ease: 'linear',
+        modifier: utils.round(0),
+        onUpdate: () => (countEl.textContent = String(qn.n)),
+      }, 5000);
+
+    /* he joins: the box widens, the count becomes 4, the pose flips */
+    M.call(() => setTag(wTag, A.final(wTag)), 7300);
+    M.add(qboxEl, { d: ['M 300 360 H 478 V 468 H 300 Z', 'M 300 360 H 540 V 468 H 300 Z'], duration: 480, ease: 'inOut(2)' }, 7350);
+    M.add(qn, {
+      n: 4,
+      duration: 220,
+      modifier: utils.round(0),
+      onUpdate: () => (countEl.textContent = String(qn.n)),
+    }, 7500);
+
+    /* one message leaves for the owner */
+    M.add(alertEl, { opacity: [0, 1], translateY: [14, 0], duration: 620, ease: snap }, 8300);
+
+    /* the scene holds and lives, then the annotations dissolve and it replays */
+    M.add(
+      [
+        ...Array.from(cam.querySelectorAll('.c-bone, .c-joint, .c-pbox, .p-tag')),
+        qboxEl,
+        chip,
+        alertEl,
+        walker,
+      ],
+      { opacity: 0, duration: 800, ease: 'linear' },
+      20800,
+    );
 
     once(cam, () => {
-      if (scanline) {
-        loops.push(animate(scanline, { top: ['-22%', '122%'], duration: 3600, loop: true, ease: 'linear' }));
+      /* the constant life of the frame */
+      if (scanline) loops.push(animate(scanline, { top: ['-22%', '122%'], duration: 3600, loop: true, ease: 'linear' }));
+      if (rec) loops.push(animate(rec, { opacity: [1, 0.12], duration: 640, alternate: true, loop: true, ease: 'inOutSine' }));
+      const scanarm = cam.querySelector<SVGGElement>('[data-scanarm]');
+      if (scanarm) loops.push(animate(scanarm, { rotate: [-2, 9], duration: 1300, alternate: true, loop: true, ease: 'inOutSine' }));
+      const phoneEl = cam.querySelector<SVGRectElement>('[data-phone]');
+      if (phoneEl) loops.push(animate(phoneEl, { translateY: [0, 1.4], duration: 900, alternate: true, loop: true, ease: 'inOutSine' }));
+      const sways = cam.querySelectorAll<SVGGElement>('.c-sway');
+      if (sways.length) {
+        loops.push(animate(sways, { rotate: [-0.9, 0.9], duration: 2400, alternate: true, loop: true, ease: 'inOutSine', delay: stagger(500) }));
       }
-      if (rec) {
-        loops.push(animate(rec, { opacity: [1, 0.12], duration: 640, alternate: true, loop: true, ease: 'inOutSine' }));
-      }
-      tl.play();
+      loops.push(M);
+      M.play();
     });
   }
 
@@ -1076,9 +1367,9 @@ const QUEUE_X = [320, 375, 430, 485, 540, 595];
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         section.setAttribute('data-anim', '');
         const office = section.querySelector<HTMLElement>('[data-office]');
-        const cam = section.querySelector<HTMLElement>('.soon__cam');
+        const camWrap = section.querySelector<HTMLElement>('[data-cam-wrap]');
         if (office) armOffice(office);
-        if (cam) armCam(cam);
+        if (camWrap) armCam(camWrap);
         trackLoops(section);
       }
     } catch (err) {
